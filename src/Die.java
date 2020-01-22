@@ -2,25 +2,24 @@ import java.util.*;
 
 public class Die {
 
-    private final static int MAX_NUM_DIE = 5;
-
+    private int numSides;
+    private int upSide;
     private Random rand = new Random();
-    private int[] dice = new int[MAX_NUM_DIE];
+    //private int[] dice = new int[numSides];
 
     //Get values randomly (roll dice) for the dice that are chosen by the user to roll
-    private void dieRoll(boolean[] choice){
-         for(int i = 0; i < MAX_NUM_DIE; i++) {
-             if (choice[i]) {
-                 dice[i] = rand.nextInt(6) + 1;
-             }
-         }
+    public void dieRoll(boolean[] choice){
+       upSide = rand.nextInt(numSides) + 1;
     }
 
     //Function to turn the character spring from user into bool values
+    //This should be in the yahtzee class or possible a seperate class
+    
+    /*
     private void diceToRoll(char[] choice){
-        boolean[] choiceBool = new boolean[MAX_NUM_DIE];
+        boolean[] choiceBool = new boolean[numSides];
 
-        for(int i = 0; i < MAX_NUM_DIE; i++){
+        for(int i = 0; i < numSides; i++){
             if(choice[i] == 'n'){
                 choiceBool[i] = true;
             }
@@ -43,7 +42,11 @@ public class Die {
         return this.dice;
     }
 
-    public int[] sorter(int[] dice){
+     */
+
+
+    //move this method to the yat class
+    public int[] sortDie(int[] dice){
         boolean swap;
         int temp;
 

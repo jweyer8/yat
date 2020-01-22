@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Scoring {
 
     //Scoring values for specific rolls
@@ -9,19 +11,24 @@ public class Scoring {
     final private int NUM_DICE_SIDES = 6;
 
     private int[] dice;        //stores the values of the dice rolled
-    private int[] duplicate = new int[NUM_DICE_SIDES];   //stores value of how many of each die value are in the roll
+    private Duplicate dupObj = new Duplicate(MAX_NUM_DIE,dice);
+    private ArrayList<Integer> dup = dupObj.getDup();
+
+
+    //private int[] duplicate = new int[NUM_DICE_SIDES];   //stores value of how many of each die value are in the roll
 
     //Driver method
     public void scoringDriver(int[] dice){
         this.dice = dice;
-        counting(dice);
-        upperScore();
+        //Duplicate dup = new Duplicate(MAX_NUM_DIE,dice);
+        //we need to port the arraylist into this class.... this will change array syntax
         lowerScore();
+        upperScore();
     }
 
 
     //Function for counting how many of each die value (1,2,3,4,5,6) are in the roll
-    private void counting(int[] dice){
+   /* private void counting(int[] dice){
         int pos = 0;
         for (int dieVal = 1; dieVal <=NUM_DICE_SIDES; dieVal++) {
             int currentCount = 0;
@@ -33,6 +40,8 @@ public class Scoring {
             pos++;
         }
     }
+    */
+
 
     //Function for finding whether the roll has a full house
     private boolean fullHouse(){
@@ -40,11 +49,11 @@ public class Scoring {
         boolean threeDup = false;
         boolean twoDup = false;
 
-        for(int element : duplicate){
-            if(element == 2){
+        for(int i = 0; i < dup.size(); i++){
+            if( dup.get(i) == 2){
                 twoDup = true;
             }
-            if(element == 3){
+            if(dup.get(i) == 3){
                 threeDup = true;
             }
             if(threeDup && twoDup){
@@ -60,8 +69,8 @@ public class Scoring {
         int straitLen = 0;
         int currentLen = 0;
 
-        for(int element : duplicate){
-            if(element > 0){
+        for(int i = 0; i<dup.size(); i++){
+            if(dup.get(i) > 0){
                 currentLen++;
             }
             else{
@@ -80,9 +89,9 @@ public class Scoring {
     private int maxDup(){
         int dupVal = 0;
 
-        for(int element : duplicate){
-            if(element >= 3){
-                dupVal = element;
+        for(int i = 0; i < dup.size(); i++){
+            if(dup.get(i) >= 3){
+                dupVal = dup.get(i);
             }
         }
     return dupVal;
@@ -101,7 +110,7 @@ public class Scoring {
     //Upper ScoreCard
     private void upperScore(){
         for (int diceVal = 1; diceVal <= NUM_DICE_SIDES; diceVal++) {
-            System.out.println("Your score for " + diceVal + "'s is: " + duplicate[diceVal-1]*diceVal);
+            System.out.println("Your score for " + diceVal + "'s is: " + dup.get(diceVal-1)*diceVal);
         }
     }
 

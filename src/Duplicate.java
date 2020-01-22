@@ -6,7 +6,7 @@ public class Duplicate {
     private ArrayList<Integer> dup = new ArrayList<Integer>(sides);
     private ArrayList<Integer> dice = new ArrayList<Integer>(sides);
 
-    private void getDup(){
+    private void findDup(){
         int pos = 0;
         for (int dieVal = 1; dieVal <= sides; dieVal++) {
             int currentCount = 0;
@@ -27,7 +27,7 @@ public class Duplicate {
         }
     }
 
-    public getDup(){
-
+    public ArrayList<Integer> getDup(){
+        return dup;
     }
 }
