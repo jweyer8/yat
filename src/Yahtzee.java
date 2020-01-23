@@ -1,14 +1,13 @@
 import java.util.*;
 
 public class Yahtzee {
-    private final static int MAX_NUM_DIE = 5;
 
     public static void main(String args[]){
+        final int NUM_DICE = 5, NUM_SIDES = 6;
 
-        int[] dice = {0,0,0,0,0};
+        ArrayList<Die> hand = new ArrayList<>();
+        String userStr = "nnnnn";
         Scanner kb = new Scanner(System.in);
-        char[] userChoice = new char[MAX_NUM_DIE];
-        //String playAgain = "y";
 
         System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
         System.out.println("|                                         |");
@@ -24,20 +23,22 @@ public class Yahtzee {
 
         while (playAgain.equals("y")) {
             int turn = 1;
-            String userStr = "nnnnn";
+            User user = new User(userStr);
 
-            while (turn < 4 && !(userStr.equals("yyyyy"))){
+            for(int dieCount = 0; dieCount < NUM_DICE; dieCount++) {
+                hand.add(new Die(NUM_SIDES,user.getUserChoice().get(dieCount)));
+            }
+
+            while (turn < 4 && !(user.getUserStr().equals("yyyyy"))){
                 //roll dice not kept
-                for (int i = 0; i < userStr.length(); i++) {
-                    userChoice[i] = userStr.charAt(i);
+                for(int dieCount = 0; dieCount < NUM_DICE; dieCount++) {
+                    if(hand.get(dieCount).getKeep() == 'n') hand.get(dieCount).dieRoll();
                 }
-                Die die = new Die();
-                dice = die.rollDriver(userChoice, dice);
 
                 //output roll
                 System.out.print("Your roll was: ");
-                for (int dieNumber = 0; dieNumber < MAX_NUM_DIE; dieNumber++) {
-                    System.out.print(dice[dieNumber] + " ");
+                for (int dieCount = 0; dieCount < NUM_DICE; dieCount++) {
+                    System.out.print(hand.get(dieCount).getValue() + " ");
                 }
                 System.out.println();
 
@@ -45,8 +46,13 @@ public class Yahtzee {
                 if (turn < 3) {
                     System.out.println("enter dice to keep (y or n) ");
                     userStr = kb.nextLine();
+                    user.setUserStr(userStr);
 
-                    if(userStr.length() > MAX_NUM_DIE){
+                    for(int dieCount = 0; dieCount < NUM_DICE; dieCount++) {
+                        hand.get(dieCount).setKeep(user.getUserChoice().get(dieCount));
+                    }
+
+                    if(user.getUserLen() > NUM_DICE){
                         //throw error here
                         System.out.println("The string is too big");
                         turn = 5;
@@ -54,16 +60,12 @@ public class Yahtzee {
                 }
                 turn++;
             }
-            Scoring scoring = new Scoring();
-            Die die = new Die();
-            die.sorter(dice);
+            Scoring score = new Scoring(hand,NUM_SIDES);
 
             System.out.print("Here are your sorted dice: ");
-            for(int i = 0; i< MAX_NUM_DIE; i++){
-                System.out.print(" " + dice[i]);
-            }
+            score.printSorted();
             System.out.println();
-            scoring.scoringDriver(dice);
+            score.getScore();
             System.out.println();
             System.out.println();
             System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
@@ -77,6 +79,9 @@ public class Yahtzee {
 
             playAgain = kb.nextLine();
             System.out.flush();
+            hand.clear();
+            userStr = "nnnnn";
         }
     }
 }
+

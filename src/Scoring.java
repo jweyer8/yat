@@ -1,46 +1,56 @@
-import java.util.ArrayList;
+import java.util.*;
 
-public class Scoring {
+public class Scoring{
 
     //Scoring values for specific rolls
-    final private int FULL_HOUSE_SCORE = 25;
-    final private int SMALL_STRAIGHT_SCORE = 30;
-    final private int LARGE_STRAIGHT_SCORE = 40;
-    final private int NO_SCORE = 0;
-    final private int MAX_NUM_DIE = 5;
-    final private int NUM_DICE_SIDES = 6;
+    final static private int FULL_HOUSE_SCORE = 25;
+    final static private int SMALL_STRAIGHT_SCORE = 30;
+    final static private int LARGE_STRAIGHT_SCORE = 40;
+    final static private int YAHTZEE_SCORE = 50;
+    final static private int NO_SCORE = 0;
 
-    private int[] dice;        //stores the values of the dice rolled
-    private Duplicate dupObj = new Duplicate(MAX_NUM_DIE,dice);
-    private ArrayList<Integer> dup = dupObj.getDup();
-
-
-    //private int[] duplicate = new int[NUM_DICE_SIDES];   //stores value of how many of each die value are in the roll
+    private ArrayList<Integer> dup = new ArrayList<>();
+    private ArrayList<Die> hand = new ArrayList<>();
+    private ArrayList<Integer> handVals = new ArrayList<>();
+    private int len, numSides;
 
     //Driver method
-    public void scoringDriver(int[] dice){
-        this.dice = dice;
-        //Duplicate dup = new Duplicate(MAX_NUM_DIE,dice);
-        //we need to port the arraylist into this class.... this will change array syntax
-        lowerScore();
-        upperScore();
+    public Scoring(ArrayList<Die> hand, int numSides){
+        this.hand = hand;
+        this.numSides = numSides;
+        len = hand.size();
+        getVal();
+        getDup();
     }
 
-
-    //Function for counting how many of each die value (1,2,3,4,5,6) are in the roll
-   /* private void counting(int[] dice){
-        int pos = 0;
-        for (int dieVal = 1; dieVal <=NUM_DICE_SIDES; dieVal++) {
-            int currentCount = 0;
-            for (int dicePos = 0; dicePos < MAX_NUM_DIE; dicePos++) {
-                if (dice[dicePos] == dieVal)
-                    currentCount++;
-            }
-            duplicate[pos] = currentCount;
-            pos++;
+    public void printSorted(){
+        Collections.sort(handVals);
+        for(int el : handVals){
+            System.out.print(el + " ");
         }
     }
-    */
+
+    public void getScore(){
+        upperScore();
+        lowerScore();
+    }
+
+    private void getVal(){
+        for(int dieCount = 0; dieCount < len; dieCount++){
+            handVals.add( hand.get(dieCount).getValue());
+        }
+    }
+
+    private void getDup(){
+        int dupCount;
+        for(int dieVal = 1; dieVal <= numSides; dieVal++){
+            dupCount = 0;
+            for(int dieCount = 0; dieCount < len; dieCount++){
+                if(handVals.get(dieCount) == dieVal) dupCount++;
+            }
+            dup.add(dupCount);
+        }
+    }
 
 
     //Function for finding whether the roll has a full house
@@ -49,14 +59,14 @@ public class Scoring {
         boolean threeDup = false;
         boolean twoDup = false;
 
-        for(int i = 0; i < dup.size(); i++){
-            if( dup.get(i) == 2){
+        for (int el : dup) {
+            if (el == 2) {
                 twoDup = true;
             }
-            if(dup.get(i) == 3){
+            if (el == 3) {
                 threeDup = true;
             }
-            if(threeDup && twoDup){
+            if (threeDup && twoDup) {
                 full = true;
             }
         }
@@ -69,11 +79,10 @@ public class Scoring {
         int straitLen = 0;
         int currentLen = 0;
 
-        for(int i = 0; i<dup.size(); i++){
-            if(dup.get(i) > 0){
+        for (int el : dup) {
+            if (el > 0) {
                 currentLen++;
-            }
-            else{
+            } else {
                 currentLen = 0;
             }
         }
@@ -89,9 +98,9 @@ public class Scoring {
     private int maxDup(){
         int dupVal = 0;
 
-        for(int i = 0; i < dup.size(); i++){
-            if(dup.get(i) >= 3){
-                dupVal = dup.get(i);
+        for (int el: dup) {
+            if (el >= 3) {
+                dupVal = el;
             }
         }
     return dupVal;
@@ -100,8 +109,8 @@ public class Scoring {
     //Function for summing the total value of the dice rolled
     private int sumDice(){
         int sum = 0;
-        for(int dicePos = 0; dicePos < MAX_NUM_DIE; dicePos++){
-            sum += dice[dicePos];
+        for(int dieVal = 1; dieVal <= numSides; dieVal++){
+            sum += dup.get(dieVal-1)*(dieVal);
         }
         return sum;
     }
@@ -109,8 +118,8 @@ public class Scoring {
 
     //Upper ScoreCard
     private void upperScore(){
-        for (int diceVal = 1; diceVal <= NUM_DICE_SIDES; diceVal++) {
-            System.out.println("Your score for " + diceVal + "'s is: " + dup.get(diceVal-1)*diceVal);
+        for (int diceVal = 1; diceVal <= numSides; diceVal++) {
+            System.out.println("Score " + dup.get(diceVal-1)*diceVal + " on the " + diceVal + " line");
         }
     }
 
@@ -120,42 +129,46 @@ public class Scoring {
         //Print out scores for duplicates ie 3 of a kind, 4 of a kind, and yahtzee
         switch(maxDup()){
             case 3:
-                System.out.println("Your score for 3 of a kind is: " + sumDice());
+                System.out.println("Score " + sumDice() + " on the 3 of a kind line");
                 break;
             case 4:
-                System.out.println("Your score for 4 of a kind is: " + sumDice());
+                System.out.println("Score " + sumDice() + " on the 4 of a kind line");
                 break;
             case 5:
-                System.out.println("yahtzee!!");
+                System.out.println("Score " + YAHTZEE_SCORE + " on the Yahtzee line");
                 break;
+            default:
+                System.out.println("Score " + NO_SCORE + " on the 3 of a kind line");
+                System.out.println("Score " + NO_SCORE + " on the 4 of a kind line");
+                System.out.println("Score " + NO_SCORE + " on the Yahtzee line");
         }
-
 
         //Print out score for full house
         if(fullHouse()){
-            System.out.println("Your score for the full house section is: " + FULL_HOUSE_SCORE);
+            System.out.println("Score " + FULL_HOUSE_SCORE + " on the Full House line");
         }
         else {
-            System.out.println("Your score for the full house section is: " + NO_SCORE);
+            System.out.println("Score " + NO_SCORE + " on the Full House line");
         }
 
 
         //Print out score for small and large straigts
         switch(straits()){
             case 4:
-                System.out.println("Your score for small straight is: " + SMALL_STRAIGHT_SCORE);
+                System.out.println("Score " + SMALL_STRAIGHT_SCORE + " on the Small Straight line");
                 break;
             case 5:
-                System.out.println("Your score for large straight is: " + LARGE_STRAIGHT_SCORE);
+                System.out.println("Score " + LARGE_STRAIGHT_SCORE + " on the Large Straight line");
                 break;
             default:
-                System.out.println("Your score for large straight is: " + NO_SCORE);
+                System.out.println("Score " + NO_SCORE + " on the Small Straight line");
+                System.out.println("Score " + NO_SCORE + " on the Small Straight line");
                 break;
         }
 
 
         //Prints out score for chance
-        System.out.println("Your score for chance is: " + sumDice());
+        System.out.println("Score " + sumDice() + " on the Chance line");
     }
 
 
