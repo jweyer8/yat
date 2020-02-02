@@ -83,7 +83,7 @@ public class Scoring{
     /**
      * get the value of the side that is up on the dice
      *
-     * @link #handVals
+     * @see #handVals
      */
     private void getVal(){
         for(int dieCount = 0; dieCount < len; dieCount++){
@@ -94,7 +94,7 @@ public class Scoring{
     /**
      * determine how many duplicates are in the hand ie, how many 1's 2's 3's... in hand
      *
-     * @link #dup
+     * @see #dup
      */
     private void getDup(){
         int dupCount;

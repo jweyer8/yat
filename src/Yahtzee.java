@@ -2,10 +2,12 @@ import java.util.*;
 
 /**
  * Yahtzee main class that allows user to play the game
+ * CPSC 224, Spring 2020
+ * Programming assignment #1
+ * No sources to cite.
  *
  * @author Jared Weyer
- * @version 1.0
- * @see User
+ * @version 1.0 1/30/20
  * @see Die
  * @see Scoring
  */
@@ -24,10 +26,12 @@ public class Yahtzee {
          * contains the die objects in the hand
          */
         final int NUM_SIDES = 6;
-
+        /**
+         * holds the die objects in the hand
+         */
         ArrayList<Die> hand = new ArrayList<>();
         /**
-         * contains the user input <br> "y" indicates to keep the die value / not roll the die </br> <br> "n" indicates to not keep the die value / roll the die </br>
+         * contains the user input | "y" indicates to keep the die value / not roll the die | "n" indicates to not keep the die value / roll the die
          */
         String userStr = "nnnnn";
         Scanner kb = new Scanner(System.in);
@@ -46,14 +50,13 @@ public class Yahtzee {
 
         while (playAgain.equals("y")) {
             int turn = 1;
-            User user = new User(userStr);
 
             //create array of dice objects
             for(int dieCount = 0; dieCount < NUM_DICE; dieCount++) {
-                hand.add(new Die(NUM_SIDES,user.getUserChoice().get(dieCount)));
+                hand.add(new Die(NUM_SIDES,userStr.charAt(dieCount)));
             }
 
-            while (turn < 4 && !(user.getUserStr().equals("yyyyy"))){
+            while (turn < 4 && !(userStr.equals("yyyyy"))){
                 //roll dice not kept
                 for(int dieCount = 0; dieCount < NUM_DICE; dieCount++) {
                     if(hand.get(dieCount).getKeep() == 'n') hand.get(dieCount).dieRoll();
@@ -70,15 +73,14 @@ public class Yahtzee {
                 if (turn < 3) {
                     System.out.println("enter dice to keep (y or n) ");
                     userStr = kb.nextLine();
-                    user.setUserStr(userStr);
 
                     //set the keep attribute of dice to indicate which dice should be rolled
                     for(int dieCount = 0; dieCount < NUM_DICE; dieCount++) {
-                        hand.get(dieCount).setKeep(user.getUserChoice().get(dieCount));
+                        hand.get(dieCount).setKeep(userStr.charAt(dieCount));
                     }
 
-                    if(user.getUserLen() > NUM_DICE){
-                        //throw error here
+                    if(userStr.length() > NUM_DICE){
+                        //should throw error here
                         System.out.println("The string is too big");
                         turn = 5;
                     }
