@@ -1,4 +1,3 @@
-import java.util.*;
 
 /**
  * Class for determining the score associated with the hand
@@ -28,50 +27,20 @@ public class Scoring{
      */
     final static private int NO_SCORE = 0;
     /**
-     * how many duplicate values in the hand ie, how many 1's 2's 3's... in hand
-     */
-    private ArrayList<Integer> dup = new ArrayList<>();
-    /**
      * contains the die objects
      */
-    private ArrayList<Die> hand;
-    /**
-     * contains the value of the up side of the die
-     */
-    private ArrayList<Integer> handVals = new ArrayList<>();
-    /**
-     * the number of die in the hand
-     */
-    private int len;
-    /**
-     * how many sides does the die have and how many die are in hand
-     */
-    private int numSides;
+    private Hand hand;
+
+
 
     /**
      * EVC for the scoring class
      *
      * @param hand {@link #hand}
-     * @param numSides {@link #hand}
      */
-    public Scoring(ArrayList<Die> hand, int numSides){
+    public Scoring(Hand hand){
         this.hand = hand;
-        this.numSides = numSides;
-        len = hand.size();
-        getVal();
-        getDup();
     }
-
-    /**
-     * sort die from least to greatest based on side up value
-     */
-    public void printSorted(){
-        Collections.sort(handVals);
-        for(int el : handVals){
-            System.out.print(el + " ");
-        }
-    }
-
     /**
      * get the score for upper and lower scorecard
      */
@@ -79,35 +48,6 @@ public class Scoring{
         upperScore();
         lowerScore();
     }
-
-    /**
-     * get the value of the side that is up on the dice
-     *
-     * @see #handVals
-     */
-    private void getVal(){
-        for(int dieCount = 0; dieCount < len; dieCount++){
-            handVals.add( hand.get(dieCount).getValue());
-        }
-    }
-
-    /**
-     * determine how many duplicates are in the hand ie, how many 1's 2's 3's... in hand
-     *
-     * @see #dup
-     */
-    private void getDup(){
-        int dupCount;
-        for(int dieVal = 1; dieVal <= numSides; dieVal++){
-            dupCount = 0;
-            for(int dieCount = 0; dieCount < len; dieCount++){
-                if(handVals.get(dieCount) == dieVal) dupCount++;
-            }
-            dup.add(dupCount);
-        }
-    }
-
-
     /**
      * Determine whether the roll has a full house
      *
@@ -118,7 +58,7 @@ public class Scoring{
         boolean threeDup = false;
         boolean twoDup = false;
 
-        for (int el : dup) {
+        for (int el : hand.getDup()) {
             if (el == 2) {
                 twoDup = true;
             }
@@ -132,7 +72,6 @@ public class Scoring{
 
     return full;
     }
-
     /**
      * Determine whether the roll has a small or large straight
      *
@@ -142,7 +81,7 @@ public class Scoring{
         int straitLen = 0;
         int currentLen = 0;
 
-        for (int el : dup) {
+        for (int el : hand.getDup()) {
             if (el > 0) {
                 currentLen++;
             } else {
@@ -156,7 +95,6 @@ public class Scoring{
 
         return straitLen;
     }
-
     /**
      * Determine whether the roll has a 3 of a kind, 4 of a kind, or a yahtzee
      *
@@ -165,37 +103,21 @@ public class Scoring{
     private int maxDup(){
         int dupVal = 0;
 
-        for (int el: dup) {
+        for (int el: hand.getDup()) {
             if (el >= 3) {
                 dupVal = el;
             }
         }
     return dupVal;
     }
-
-    /**
-     * Method for summing the total value of the dice rolled
-     *
-     * @return returns the sum of the die up values
-     */
-    private int sumDice(){
-        int sum = 0;
-        for(int dieVal = 1; dieVal <= numSides; dieVal++){
-            sum += dup.get(dieVal-1)*(dieVal);
-        }
-        return sum;
-    }
-
-
     /**
      * Prints the values for the upper scorecard
      */
     private void upperScore(){
-        for (int diceVal = 1; diceVal <= numSides; diceVal++) {
-            System.out.println("Score " + dup.get(diceVal-1)*diceVal + " on the " + diceVal + " line");
+        for (int diceVal = 1; diceVal <= hand.getNumSides(); diceVal++) {
+            System.out.println("Score " + hand.getDup().get(diceVal-1)*diceVal + " on the " + diceVal + " line");
         }
     }
-
     /**
      * Prints the values for the lower scorecard
      */
@@ -204,10 +126,10 @@ public class Scoring{
         //Print out scores for duplicates ie 3 of a kind, 4 of a kind, and yahtzee
         switch(maxDup()){
             case 3:
-                System.out.println("Score " + sumDice() + " on the 3 of a kind line");
+                System.out.println("Score " + hand.sumDice() + " on the 3 of a kind line");
                 break;
             case 4:
-                System.out.println("Score " + sumDice() + " on the 4 of a kind line");
+                System.out.println("Score " + hand.sumDice() + " on the 4 of a kind line");
                 break;
             case 5:
                 System.out.println("Score " + YAHTZEE_SCORE + " on the Yahtzee line");
@@ -243,6 +165,6 @@ public class Scoring{
 
 
         //Prints out score for chance
-        System.out.println("Score " + sumDice() + " on the Chance line");
+        System.out.println("Score " + hand.sumDice() + " on the Chance line");
     }
 }

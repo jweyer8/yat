@@ -18,22 +18,11 @@ public class Yahtzee {
      * @param args takes in command line arguments
      */
     public static void main(String[] args){
-        /**
-         * Number of sides of the die
-         */
+        //Number of dice in the hand
         int NUM_DICE = 5;
-        /**
-         * contains the die objects in the hand
-         */
+        //Number of sides on the dice
         final int NUM_SIDES = 6;
-        /**
-         * holds the die objects in the hand
-         */
-        ArrayList<Die> hand = new ArrayList<>();
-        /**
-         * contains the user input | "y" indicates to keep the die value / not roll the die | "n" indicates to not keep the die value / roll the die
-         */
-        String userStr = "nnnnn";
+        //Scanner to get user input on whether they would like to play and which dice they would like to keep
         Scanner kb = new Scanner(System.in);
 
         System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
@@ -45,53 +34,33 @@ public class Yahtzee {
         System.out.println("|                                         |");
         System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
 
+        //Determines if the user wants to play
         String playAgain = kb.nextLine();
         System.out.flush();
 
         while (playAgain.equals("y")) {
+            //Keeps track of how many rolls they player has used
             int turn = 1;
+            //Contains the die objects
+            Hand hand = new Hand(NUM_SIDES,NUM_DICE,"nnnnn");
 
-            //create array of dice objects
-            for(int dieCount = 0; dieCount < NUM_DICE; dieCount++) {
-                hand.add(new Die(NUM_SIDES,userStr.charAt(dieCount)));
-            }
-
-            while (turn < 4 && !(userStr.equals("yyyyy"))){
-                //roll dice not kept
-                for(int dieCount = 0; dieCount < NUM_DICE; dieCount++) {
-                    if(hand.get(dieCount).getKeep() == 'n') hand.get(dieCount).dieRoll();
-                }
-
-                //output roll
-                System.out.print("Your roll was: ");
-                for (int dieCount = 0; dieCount < NUM_DICE; dieCount++) {
-                    System.out.print(hand.get(dieCount).getValue() + " ");
-                }
-                System.out.println();
+            while (turn < 4 && !(hand.getUserStr().equals("yyyyy"))){
+                hand.rollDice();
+                hand.printHand();
 
                 //if not the last roll of the hand prompt the user for dice to keep
                 if (turn < 3) {
                     System.out.println("enter dice to keep (y or n) ");
-                    userStr = kb.nextLine();
-
-                    //set the keep attribute of dice to indicate which dice should be rolled
-                    for(int dieCount = 0; dieCount < NUM_DICE; dieCount++) {
-                        hand.get(dieCount).setKeep(userStr.charAt(dieCount));
-                    }
-
-                    if(userStr.length() > NUM_DICE){
-                        //should throw error here
-                        System.out.println("The string is too big");
-                        turn = 5;
-                    }
+                    hand.setUserStr(kb.nextLine());
+                    hand.rollWhich();
                 }
                 turn++;
             }
 
             //Get the score for the round and output the scores
-            Scoring score = new Scoring(hand,NUM_SIDES);
             System.out.print("Here are your sorted dice: ");
-            score.printSorted();
+            hand.printSorted();
+            Scoring score = new Scoring(hand);
             System.out.println();
             score.getScore();
             System.out.println();
@@ -101,7 +70,7 @@ public class Yahtzee {
             System.out.println("|               Game Over!                |");
             System.out.println("|                                         |");
             System.out.println("|        Enter 'y' to play again          |");
-            System.out.println("|          Press enter to quit            |");
+            System.out.println("|                                         |");
             System.out.println("|                                         |");
             System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
 
@@ -109,8 +78,7 @@ public class Yahtzee {
             System.out.flush();
 
             //reset for next round
-            hand.clear();
-            userStr = "nnnnn";
+            hand = null;
         }
     }
 }

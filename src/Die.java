@@ -21,6 +21,8 @@ public class Die {
      */
     private char keep;
 
+
+
     /**
      * EVC for the Die class
      *
@@ -31,6 +33,7 @@ public class Die {
         this.numSides = numSides;
         this.keep = keep;
         rand = new Random();
+        dieRoll();
     }
 
     /**
