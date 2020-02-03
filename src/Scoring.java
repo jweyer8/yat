@@ -122,7 +122,6 @@ public class Scoring{
      * Prints the values for the lower scorecard
      */
     private void lowerScore(){
-
         //Print out scores for duplicates ie 3 of a kind, 4 of a kind, and yahtzee
         switch(maxDup()){
             case 3:
@@ -139,7 +138,6 @@ public class Scoring{
                 System.out.println("Score " + NO_SCORE + " on the 4 of a kind line");
                 System.out.println("Score " + NO_SCORE + " on the Yahtzee line");
         }
-
         //Print out score for full house
         if(fullHouse()){
             System.out.println("Score " + FULL_HOUSE_SCORE + " on the Full House line");
@@ -147,8 +145,6 @@ public class Scoring{
         else {
             System.out.println("Score " + NO_SCORE + " on the Full House line");
         }
-
-
         //Print out score for small and large straigts
         switch(straits()){
             case 4:
@@ -162,8 +158,6 @@ public class Scoring{
                 System.out.println("Score " + NO_SCORE + " on the Small Straight line");
                 break;
         }
-
-
         //Prints out score for chance
         System.out.println("Score " + hand.sumDice() + " on the Chance line");
     }
