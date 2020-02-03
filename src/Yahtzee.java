@@ -42,7 +42,7 @@ public class Yahtzee {
             //Keeps track of how many rolls they player has used
             int turn = 1;
             //Contains the die objects
-            Hand hand = new Hand(NUM_SIDES,NUM_DICE,"nnnnn");
+            Hand hand = new Hand(NUM_SIDES,NUM_DICE);
 
             while (turn < 4 && !(hand.getUserStr().equals("yyyyy"))){
                 hand.rollDice();

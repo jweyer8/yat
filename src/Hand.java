@@ -41,18 +41,21 @@ public class Hand {
      *
      * @param numSides {@link #numSides}
      * @param numDice {@link #numDice}
-     * @param userStr {@link #userStr}
      */
-    public Hand(int numSides,int numDice, String userStr){
+    public Hand(int numSides,int numDice){
         this.numSides = numSides;
         this.numDice = numDice;
-        this.userStr = userStr;
+        //ArrayList<Character> userStrArray = new ArrayList<>();
+        String str = "";
         hand = new ArrayList<>();
 
         for(int dieCount = 0; dieCount < numDice; dieCount++) {
-            hand.add(new Die(numSides,userStr.charAt(dieCount)));
+            hand.add(new Die(numSides,'n'));
             handVals.add(dieCount);
+            str += 'n';
         }
+        userStr = str;
+
         for(int dieVal = 1; dieVal <= numSides; dieVal++) {
             dup.add(dieVal);
         }
@@ -151,5 +154,11 @@ public class Hand {
      * @return userStr {@link #userStr}
      */
     public String getUserStr(){return userStr;}
+    /**
+     * Gets the handVals ArrayList
+     *
+     * @return {@link #handVals}
+     */
+    public ArrayList<Integer> getVals(){return handVals;}
 }
 

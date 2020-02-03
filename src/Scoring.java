@@ -78,22 +78,20 @@ public class Scoring{
      * @return returns an <code>int</code> indicating the length of the straight
      */
     private int straits(){
-        int straitLen = 0;
         int currentLen = 0;
+        int bigLen = 0;
 
         for (int el : hand.getDup()) {
             if (el > 0) {
                 currentLen++;
+                if(currentLen >= 4){
+                    bigLen = currentLen;
+                }
             } else {
                 currentLen = 0;
             }
         }
-
-        if(currentLen == 4 || currentLen== 5){
-            straitLen = currentLen;
-        }
-
-        return straitLen;
+        return bigLen;
     }
     /**
      * Determine whether the roll has a 3 of a kind, 4 of a kind, or a yahtzee
@@ -123,42 +121,26 @@ public class Scoring{
      */
     private void lowerScore(){
         //Print out scores for duplicates ie 3 of a kind, 4 of a kind, and yahtzee
-        switch(maxDup()){
-            case 3:
-                System.out.println("Score " + hand.sumDice() + " on the 3 of a kind line");
-                break;
-            case 4:
-                System.out.println("Score " + hand.sumDice() + " on the 4 of a kind line");
-                break;
-            case 5:
-                System.out.println("Score " + YAHTZEE_SCORE + " on the Yahtzee line");
-                break;
-            default:
-                System.out.println("Score " + NO_SCORE + " on the 3 of a kind line");
-                System.out.println("Score " + NO_SCORE + " on the 4 of a kind line");
-                System.out.println("Score " + NO_SCORE + " on the Yahtzee line");
-        }
+        if(maxDup() == 3){System.out.println("Score " + hand.sumDice() + " on the 3 of a kind line");}
+        else{System.out.println("Score " + NO_SCORE + " on the 3 of a kind line");}
+        if(maxDup() == 4){System.out.println("Score " + hand.sumDice() + " on the 4 of a kind line");}
+        else{System.out.println("Score " + NO_SCORE + " on the 4 of a kind line");}
+
         //Print out score for full house
-        if(fullHouse()){
-            System.out.println("Score " + FULL_HOUSE_SCORE + " on the Full House line");
-        }
-        else {
-            System.out.println("Score " + NO_SCORE + " on the Full House line");
-        }
-        //Print out score for small and large straigts
-        switch(straits()){
-            case 4:
-                System.out.println("Score " + SMALL_STRAIGHT_SCORE + " on the Small Straight line");
-                break;
-            case 5:
-                System.out.println("Score " + LARGE_STRAIGHT_SCORE + " on the Large Straight line");
-                break;
-            default:
-                System.out.println("Score " + NO_SCORE + " on the Small Straight line");
-                System.out.println("Score " + NO_SCORE + " on the Small Straight line");
-                break;
-        }
-        //Prints out score for chance
+        if(fullHouse()){ System.out.println("Score " + FULL_HOUSE_SCORE + " on the Full House line"); }
+        else {System.out.println("Score " + NO_SCORE + " on the Full House line"); }
+
+        //Print out score for small and large straits
+        if(straits() == 4) {System.out.println("Score " + SMALL_STRAIGHT_SCORE + " on the Small Straight line");}
+        else{System.out.println("Score " + NO_SCORE + " on the Small Straight line");}
+        if(straits() == 5) {System.out.println("Score " + LARGE_STRAIGHT_SCORE + " on the Large Straight line");}
+        else{System.out.println("Score " + NO_SCORE + " on the Large Straight line");}
+
+        //Print Yahtzee score
+        if(maxDup() == 5){System.out.println("Score " + YAHTZEE_SCORE + " on the Yahtzee line");}
+        else{System.out.println("Score " + NO_SCORE + " on the Yahtzee line");}
+
+        //Print out the sum of the dice for the chance score
         System.out.println("Score " + hand.sumDice() + " on the Chance line");
     }
 }
