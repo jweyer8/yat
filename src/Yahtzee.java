@@ -1,4 +1,7 @@
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.*;
+import java.io.File;
 
 /**
  * Yahtzee main class that allows user to play the game
@@ -19,11 +22,15 @@ public class Yahtzee {
      */
     public static void main(String[] args){
         //Number of dice in the hand
-        int NUM_DICE = 5;
+        int numDice = 0;
         //Number of sides on the dice
-        final int NUM_SIDES = 6;
+        int numSides = 0;
+        //Number of turns
+        int maxTurns = 0;
         //Scanner to get user input on whether they would like to play and which dice they would like to keep
         Scanner kb = new Scanner(System.in);
+        //String for comparing user input
+        String comp = "";
 
         System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
         System.out.println("|                                         |");
@@ -41,24 +48,93 @@ public class Yahtzee {
         while (playAgain.equals("y")) {
             //Keeps track of how many rolls they player has used
             int turn = 1;
-            //Contains the die objects
-            Hand hand = new Hand(NUM_SIDES,NUM_DICE);
 
-            while (turn < 4 && !(hand.getUserStr().equals("yyyyy"))){
+            //Get previous game set up from text file
+            try {
+                Scanner inFile = new Scanner(new File("yahtzeeConfig.txt"));
+                System.out.println("You are playing with " + inFile.nextInt() + " " + inFile.nextInt() + "-sided dice");
+                System.out.println("You get " + inFile.nextInt() + " rolls per hand");
+                inFile.close();
+            } catch (FileNotFoundException e){
+                System.out.println("File not found");
+            }
+
+            //Ask user if they would like to change the configuration of the game
+            String config;
+            System.out.println("Enter 'y' if you would like to change the configuration");
+            config = kb.nextLine();
+
+            if(config.equals("y")) {
+                //Get number of sides to the dice that the user wants
+                System.out.println("Enter the number of sides on each die");
+                numSides = kb.nextInt();
+
+                //Get number of dice the user wants
+                System.out.println("Enter the number dice in play");
+                numDice = kb.nextInt();
+
+                //Get number of turns that the user wants
+                System.out.println("Enter the number of turns per hand");
+                maxTurns = kb.nextInt();
+                kb.nextLine();
+            }
+
+            //Use previous game setup
+            else{
+                try {
+                    Scanner inFile = new Scanner(new File("yahtzeeConfig.txt"));
+                    numSides = inFile.nextInt();
+                    numDice = inFile.nextInt();
+                    maxTurns = inFile.nextInt();
+                    inFile.close();
+                } catch (FileNotFoundException e){
+                    System.out.println("File not found");
+                }
+            }
+
+            //change the yahtzee config file to the new configuration
+            try {
+                PrintStream outFile = new PrintStream(new File("yahtzeeConfig.txt"));
+                outFile.println(numSides);
+                outFile.println(numDice);
+                outFile.println(maxTurns);
+                outFile.close();
+            }
+            catch (FileNotFoundException e){
+                System.out.println("unable to open file");
+            }
+
+            //Set comparison ArrayList
+            for(int i = 0; i<numDice; i++){
+                comp += 'y';
+            }
+
+            //Contains the die objects
+            Hand hand = new Hand(numSides,numDice);
+
+            while (turn <= maxTurns && !(hand.getUserStr().equals(comp))){
                 hand.rollDice();
                 hand.printHand();
 
                 //if not the last roll of the hand prompt the user for dice to keep
-                if (turn < 3) {
-                    System.out.println("enter dice to keep (y or n) ");
-                    hand.setUserStr(kb.nextLine());
+                if (turn <= maxTurns - 1) {
+                    boolean correctInput = false;
+                    String in = "";
+
+                    while(correctInput == false) {
+                        System.out.println("enter dice to keep (y or n)");
+                        in = kb.nextLine();
+                        if(in.length() == numDice){correctInput = true;}
+                        else{System.out.println("Invalid input");}
+                    }
+
+                    hand.setUserStr(in);
                     hand.rollWhich();
                 }
                 turn++;
             }
 
             //Get the score for the round and output the scores
-            System.out.print("Here are your sorted dice: ");
             hand.printSorted();
             Scoring score = new Scoring(hand);
             System.out.println();
@@ -79,6 +155,7 @@ public class Yahtzee {
 
             //reset for next round
             hand = null;
+            comp = "";
         }
     }
 }

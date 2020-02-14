@@ -45,7 +45,6 @@ public class Hand {
     public Hand(int numSides,int numDice){
         this.numSides = numSides;
         this.numDice = numDice;
-        //ArrayList<Character> userStrArray = new ArrayList<>();
         String str = "";
         hand = new ArrayList<>();
 
@@ -55,7 +54,6 @@ public class Hand {
             str += 'n';
         }
         userStr = str;
-
         for(int dieVal = 1; dieVal <= numSides; dieVal++) {
             dup.add(dieVal);
         }
@@ -64,6 +62,7 @@ public class Hand {
      * Sort die from least to greatest based on side up value
      */
     public void printSorted(){
+        System.out.print("Here are your sorted dice: ");
         Collections.sort(handVals);
         for(int el : handVals){
             System.out.print(el + " ");
@@ -160,5 +159,6 @@ public class Hand {
      * @return {@link #handVals}
      */
     public ArrayList<Integer> getVals(){return handVals;}
+    public int getNumDice(){return numDice;}
 }
 
