@@ -1,3 +1,5 @@
+import sun.security.krb5.SCDynamicStoreConfig;
+
 import java.util.ArrayList;
 /**
  * Class for determining the score associated with the hand
@@ -31,6 +33,12 @@ public class Scoring{
      */
     private Hand hand;
 
+    private Player player;
+
+    ArrayList<String> used = new ArrayList<>();
+
+    ArrayList<Integer> scores = new ArrayList<>();
+
 
 
     /**
@@ -38,16 +46,31 @@ public class Scoring{
      *
      * @param hand {@link #hand}
      */
-    public Scoring(Hand hand){
+    public Scoring(Hand hand, Player player){
         this.hand = hand;
+        this.player = player;
+        used = player.getUsed();
     }
     /**
-     * get the score for upper and lower scorecard
+     * Print the score for upper and lower scorecard
      */
-    public void getScore(){
+    public void printScore(){
+        System.out.println();
+        System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
+        System.out.println("|         SCORECARD         |");
+        System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
         upperScore();
         lowerScore();
+        System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
+        System.out.println();
     }
+
+    /**
+     *
+     * @return
+     */
+    public ArrayList<Integer> getScores(){return scores;}
+
     /**
      * Determine whether the roll has a full house
      *
@@ -97,47 +120,160 @@ public class Scoring{
      * Prints the values for the upper scorecard
      */
     private void upperScore(){
+        boolean isUsed = false;
         for (int diceVal = 1; diceVal <= hand.getNumSides(); diceVal++) {
-            System.out.println("Score " + hand.getDup().get(diceVal-1)*diceVal + " on the " + diceVal + " line");
+            for(int i = 0; i < used.size(); i++){
+                if(String.valueOf(diceVal).equals(used.get(i))){
+                    scores.add(null);
+                   isUsed = true;
+                }
+            }
+            if(!(isUsed)){
+                scores.add(hand.getDup().get(diceVal - 1) * diceVal);
+                if(hand.getDup().get(diceVal - 1) * diceVal >= 10){
+                    System.out.println("| Score " + hand.getDup().get(diceVal - 1) * diceVal + " on the " + diceVal + "'s line  |");
+                }
+                else {
+                    System.out.println("| Score " + hand.getDup().get(diceVal - 1) * diceVal + " on the " + diceVal + "'s line   |");
+                }
+            }
+            isUsed = false;
         }
     }
     /**
      * Prints the values for the lower scorecard
      */
     private void lowerScore(){
+
         //Print out scores for duplicates ie 3 of a kind, 4 of a kind, ect.. depending on number of die in play
+        boolean isUsed = false;
         boolean hasKind; //does the hand contain 3,4,5... of a kind
         boolean yaht = false; //does the hand contain yahtzee. This will be used later in the scorecard scoring
+
         for(int kind = 3; kind <= hand.getNumDice(); kind++){
             hasKind = false;
             for(int i = 0; i < hand.getNumSides(); i++){
-                if(hand.getDup().get(i) == kind){
+                for(int j = 0; j < used.size(); j++){
+                    if((String.valueOf(kind) + "K").equals(used.get(j))){
+                        scores.add(null);
+                        isUsed = true;
+                    }
+                }
+                if(hand.getDup().get(i) == kind && !(isUsed)){
                     if(kind == hand.getNumDice()){yaht = true;} //hand contains a yahtzee
                     else {
-                        System.out.println("Score " + hand.sumDice() + " on the " + kind + "K line");
+                        scores.add(hand.sumDice());
+                        if(hand.sumDice() >= 10 && hand.sumDice() < 100){
+                            System.out.println("| Score " + hand.sumDice() + " on the " + kind + "K line   |");
+                        }
+                        else if(hand.sumDice() >= 100){
+                            System.out.println("| Score " + hand.sumDice() + " on the " + kind + "K line  |");
+                        }
+                        else{
+                            System.out.println("| Score " + hand.sumDice() + " on the " + kind + "K line    |");
+                        }
                         hasKind = true;
                     }
                     break;
                 }
             }
-            if(!(hasKind) && kind != hand.getNumDice()){System.out.println("Score " + NO_SCORE + " on the " + kind + "K line");}
+            if(!(hasKind) && kind != hand.getNumDice() && !(isUsed)){
+                scores.add(NO_SCORE);
+                System.out.println("| Score " + NO_SCORE + " on the " + kind + "K line    |");
+            }
+        }
+
+        //Check whether fullhouse, straights or yahtzee is used
+        boolean fh = false;
+        boolean y = false;
+        boolean ss = false;
+        boolean ls = false;
+        boolean c = false;
+
+        for(int j = 0; j < used.size(); j++){
+            switch(used.get(j)){
+                case("FH"):
+                    scores.add(null);
+                    fh = true;
+                    break;
+                case("SS"):
+                    scores.add(null);
+                    ss = true;
+                    break;
+                case("LS"):
+                    scores.add(null);
+                    ls = true;
+                    break;
+                case("Y"):
+                    scores.add(null);
+                    y = true;
+                    break;
+                case("C"):
+                    scores.add(null);
+                    c = true;
+                    break;
+            }
         }
 
         //Print out score for full house
-        if(fullHouse()){ System.out.println("Score " + FULL_HOUSE_SCORE + " on the FH line"); }
-        else {System.out.println("Score " + NO_SCORE + " on the FH line"); }
+        if(!(fh)) {
+            if(fullHouse()){
+                scores.add(FULL_HOUSE_SCORE);
+                System.out.println("| Score " + FULL_HOUSE_SCORE + " on the FH line   |");
+            }
+            else{
+                scores.add(NO_SCORE);
+                System.out.println("| Score " + NO_SCORE + " on the FH line    |");
+            }
+        }
 
-        //Print out score for small and large straits
-        if(straits() == 4) {System.out.println("Score " + SMALL_STRAIGHT_SCORE + " on the SS line");}
-        else{System.out.println("Score " + NO_SCORE + " on the SS line");}
-        if(straits() >= 5) {System.out.println("Score " + LARGE_STRAIGHT_SCORE + " with a straight of " + straits() + " On the LS line");}
-        else{System.out.println("Score " + NO_SCORE + " on the LS line");}
+        //Print out score for small straight
+        if(!(ss)) {
+            if(straits() == 4){
+                scores.add(SMALL_STRAIGHT_SCORE);
+                System.out.println("| Score " + SMALL_STRAIGHT_SCORE + " on the SS line   |");
+            }
+            else{
+                scores.add(NO_SCORE);
+                System.out.println("| Score " + NO_SCORE + " on the SS line    |");
+            }
+        }
+
+        //Print out score for large straight
+        if(!(ls)) {
+            if(straits() >= 5){
+                scores.add(LARGE_STRAIGHT_SCORE);
+                System.out.println("| Score " + LARGE_STRAIGHT_SCORE + " with a straight of " + straits() + " On the LS line    |");
+            }
+            else{
+                scores.add(NO_SCORE);
+                System.out.println("| Score " + NO_SCORE + " on the LS line    |");}
+        }
 
         //Print Yahtzee score
-        if(yaht){System.out.println("Score " + YAHTZEE_SCORE + " on the Yahtzee line");}
-        else{System.out.println("Score " + NO_SCORE + " on the Yahtzee line");}
+        if(!(y)) {
+            if (yaht){
+                scores.add(YAHTZEE_SCORE);
+                System.out.println("| Score " + YAHTZEE_SCORE + " on the Y line    |");
+            }
+            else{
+                scores.add(NO_SCORE);
+                System.out.println("| Score " + NO_SCORE + " on the Y line     |");
+            }
+        }
 
         //Print out the sum of the dice for the chance score
-        System.out.println("Score " + hand.sumDice() + " on the C line");
+        if(!(c)){
+            scores.add(hand.sumDice());
+            if(hand.sumDice() >= 10){
+                System.out.println("| Score " + hand.sumDice() + " on the C line    |");
+            }
+            else if(hand.sumDice() >= 100){
+                System.out.println("| Score " + hand.sumDice() + " on the C line   |");
+            }
+            else {
+                System.out.println("| Score " + hand.sumDice() + " on the C line     |");
+            }
+        }
     }
 }

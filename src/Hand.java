@@ -50,7 +50,7 @@ public class Hand {
 
         for(int dieCount = 0; dieCount < numDice; dieCount++) {
             hand.add(new Die(numSides,'n'));
-            handVals.add(dieCount);
+            handVals.add(hand.get(dieCount).getValue());
             str += 'n';
         }
         userStr = str;

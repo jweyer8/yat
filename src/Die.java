@@ -39,7 +39,7 @@ public class Die {
     /**
      * Get values randomly (roll dice) for the die that are chosen by the user to roll
      */
-    public void dieRoll(){ value = rand.nextInt(numSides) + 1; }
+    public void dieRoll(){value = rand.nextInt(numSides) + 1;}
 
     /**
      * Sets the keep field
