@@ -153,13 +153,12 @@ public class Player {
      */
     public void printFinalCard(){
         //upper scoreCard
-        //System.out.println(finalScores);
-        for(int die = 1; die <= numSides; die++){
-            if(finalScores.get(die -1) >= 10){
-                System.out.println("| Score " + finalScores.get(die - 1) + " on the " + die + "'s line  |");
+        for(int side = 1; side <= numSides; side++){
+            if(finalScores.get(side -1) >= 10){
+                System.out.println("| Score " + finalScores.get(side - 1) + " on the " + side + "'s line  |");
             }
             else {
-                System.out.println("| Score " + finalScores.get(die - 1) + " on the " + die + "'s line   |");
+                System.out.println("| Score " + finalScores.get(side - 1) + " on the " + side + "'s line   |");
             }
         }
 

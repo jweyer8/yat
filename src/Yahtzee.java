@@ -21,8 +21,6 @@ public class Yahtzee {
      * @param args takes in command line arguments
      */
     public static void main(String[] args){
-        //Number of rounds in a game
-        int numRounds = 2;
         //Number of dice in the hand
         int numDice = 0;
         //Number of players in game
@@ -125,6 +123,9 @@ public class Yahtzee {
                 players.add(new Player(numSides,numDice));
             }
 
+            //Set number of rounds which is equal to the number of rows not including the bonus row
+            int numRounds = players.get(0).getChoices().size();
+
             //loop through all the rounds
             for(int round = 0; round < numRounds; round++) {
 
@@ -208,18 +209,21 @@ public class Yahtzee {
                     hand = null;
                     kb.nextLine();
                     System.out.flush();
-                    //players.get(player).printFinalCard();
                 }
             }
 
             int winner = 0;
+            int winnerVal = 0;
             boolean tie = false;
 
             //Print final scorecard for the player
             for (int player = 1; player <= numPlayers; player++) {
                 tie = false;
-                if(players.get(player - 1).getFinalScore() == winner) tie = true;
-                if(players.get(player - 1).getFinalScore() > winner) winner = player;
+                if(players.get(player - 1).getFinalScore() == winnerVal) tie = true;
+                if(players.get(player - 1).getFinalScore() > winnerVal){
+                    winnerVal = players.get(player - 1).getFinalScore();
+                    winner = player;
+                }
                 System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
                 System.out.println("|        PLAYER " + player + "'S         |");
                 System.out.println("|      FINAL SCORECARD      |");

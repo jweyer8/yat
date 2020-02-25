@@ -213,7 +213,6 @@ public class Scoring{
                     ls = true;
                     break;
                 case("Y"):
-                    scores.add(-1);
                     y = true;
                     break;
                 case("C"):
