@@ -142,6 +142,19 @@ public class Yahtzee {
                     //loop through all the turns for the player
                     for (int turn = 1; turn <= maxTurns; turn++) {
                         if(hand.getUserStr().equals(comp))break; //if the user does not want to roll any dice then skip other turns
+
+                        //Show the final scorecard if the player wants to see it
+                        String s = "";
+                        System.out.println("Enter 'S' if you would like to your scorecard");
+                        s = kb.nextLine();
+                        if(s.equals("S")){
+                            System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
+                            System.out.println("|        PLAYER " + (player + 1) + "'S         |");
+                            System.out.println("|      FINAL SCORECARD      |");
+                            System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
+                            players.get(player).printFinalCard();
+                        }
+
                         hand.rollDice();
                         hand.printHand();
 

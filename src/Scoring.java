@@ -60,7 +60,7 @@ public class Scoring{
     public void printScore(){
         System.out.println();
         System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
-        System.out.println("|         SCORECARD         |");
+        System.out.println("|          SCORES           |");
         System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
         upperScore();
         lowerScore();
