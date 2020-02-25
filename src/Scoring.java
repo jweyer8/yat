@@ -1,11 +1,13 @@
-import sun.security.krb5.SCDynamicStoreConfig;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+
 /**
- * Class for determining the score associated with the hand
+ * Class for determining the scores associated with each row on the scorecard for a given hand
  *
  * @author Jared Weyer
- * @version 1.0
+ * @version 3.0
  */
 public class Scoring{
     /**
@@ -32,25 +34,26 @@ public class Scoring{
      * contains the die objects
      */
     private Hand hand;
-
-    private Player player;
-
+    /**
+     * Contains the string representation of the rows that the player has already used
+     */
     ArrayList<String> used = new ArrayList<>();
-
+    /**
+     * Contains the scores for each row of the scorecard for the given hand
+     */
     ArrayList<Integer> scores = new ArrayList<>();
-
-
 
     /**
      * EVC for the scoring class
      *
      * @param hand {@link #hand}
+     * @param player Player object need to determine which rows the given player has already used
      */
-    public Scoring(Hand hand, Player player){
+    public Scoring(Hand hand, @NotNull Player player){
         this.hand = hand;
-        this.player = player;
         used = player.getUsed();
     }
+
     /**
      * Print the score for upper and lower scorecard
      */
@@ -66,8 +69,9 @@ public class Scoring{
     }
 
     /**
+     *Gets the scores corresponding to each row on the scorecard for the given hand
      *
-     * @return
+     * @return scores {link: #scores}
      */
     public ArrayList<Integer> getScores(){return scores;}
 
@@ -92,9 +96,9 @@ public class Scoring{
                 full = true;
             }
         }
-
     return full;
     }
+
     /**
      * Determine whether the roll has a small or large straight
      *
@@ -116,6 +120,7 @@ public class Scoring{
         }
         return bigLen;
     }
+
     /**
      * Prints the values for the upper scorecard
      */
@@ -124,7 +129,7 @@ public class Scoring{
         for (int diceVal = 1; diceVal <= hand.getNumSides(); diceVal++) {
             for(int i = 0; i < used.size(); i++){
                 if(String.valueOf(diceVal).equals(used.get(i))){
-                    scores.add(null);
+                    scores.add(-1);
                    isUsed = true;
                 }
             }
@@ -140,25 +145,31 @@ public class Scoring{
             isUsed = false;
         }
     }
+
     /**
      * Prints the values for the lower scorecard
      */
     private void lowerScore(){
 
         //Print out scores for duplicates ie 3 of a kind, 4 of a kind, ect.. depending on number of die in play
-        boolean isUsed = false;
+        boolean isUsed ; //has the player already used this row on their scorecard
         boolean hasKind; //does the hand contain 3,4,5... of a kind
         boolean yaht = false; //does the hand contain yahtzee. This will be used later in the scorecard scoring
 
         for(int kind = 3; kind <= hand.getNumDice(); kind++){
             hasKind = false;
-            for(int i = 0; i < hand.getNumSides(); i++){
-                for(int j = 0; j < used.size(); j++){
-                    if((String.valueOf(kind) + "K").equals(used.get(j))){
-                        scores.add(null);
-                        isUsed = true;
-                    }
+            isUsed = false;
+
+            //check if the player already used row on their scorecard (this row will not be printed if the player has used it)
+            for(int j = 0; j < used.size(); j++){
+                if((Integer.toString(kind) + "K").equals(used.get(j))){
+                    scores.add(-1);
+                    isUsed = true;
                 }
+            }
+
+            //Print all the #kind that the player has not used and is not a yahtzee
+            for(int i = 0; i < hand.getNumSides(); i++){
                 if(hand.getDup().get(i) == kind && !(isUsed)){
                     if(kind == hand.getNumDice()){yaht = true;} //hand contains a yahtzee
                     else {
@@ -193,23 +204,19 @@ public class Scoring{
         for(int j = 0; j < used.size(); j++){
             switch(used.get(j)){
                 case("FH"):
-                    scores.add(null);
                     fh = true;
                     break;
                 case("SS"):
-                    scores.add(null);
                     ss = true;
                     break;
                 case("LS"):
-                    scores.add(null);
                     ls = true;
                     break;
                 case("Y"):
-                    scores.add(null);
+                    scores.add(-1);
                     y = true;
                     break;
                 case("C"):
-                    scores.add(null);
                     c = true;
                     break;
             }
@@ -226,6 +233,9 @@ public class Scoring{
                 System.out.println("| Score " + NO_SCORE + " on the FH line    |");
             }
         }
+        else{
+            scores.add(-1);
+        }
 
         //Print out score for small straight
         if(!(ss)) {
@@ -238,16 +248,22 @@ public class Scoring{
                 System.out.println("| Score " + NO_SCORE + " on the SS line    |");
             }
         }
+        else{
+            scores.add(-1);
+        }
 
         //Print out score for large straight
         if(!(ls)) {
             if(straits() >= 5){
                 scores.add(LARGE_STRAIGHT_SCORE);
-                System.out.println("| Score " + LARGE_STRAIGHT_SCORE + " with a straight of " + straits() + " On the LS line    |");
+                System.out.println("| Score " + LARGE_STRAIGHT_SCORE + " on the LS line   |");
             }
             else{
                 scores.add(NO_SCORE);
                 System.out.println("| Score " + NO_SCORE + " on the LS line    |");}
+        }
+        else{
+            scores.add(-1);
         }
 
         //Print Yahtzee score
@@ -260,6 +276,9 @@ public class Scoring{
                 scores.add(NO_SCORE);
                 System.out.println("| Score " + NO_SCORE + " on the Y line     |");
             }
+        }
+        else{
+            scores.add(-1);
         }
 
         //Print out the sum of the dice for the chance score
@@ -274,6 +293,9 @@ public class Scoring{
             else {
                 System.out.println("| Score " + hand.sumDice() + " on the C line     |");
             }
+        }
+        else{
+            scores.add(-1);
         }
     }
 }

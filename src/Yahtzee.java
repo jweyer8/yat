@@ -6,11 +6,11 @@ import java.io.File;
 /**
  * Yahtzee main class that allows user to play the game
  * CPSC 224, Spring 2020
- * Programming assignment #1
+ * Programming assignment #3
  * No sources to cite.
  *
  * @author Jared Weyer
- * @version 1.0 1/30/20
+ * @version 3.0 2/24/20
  * @see Die
  * @see Scoring
  */
@@ -22,7 +22,7 @@ public class Yahtzee {
      */
     public static void main(String[] args){
         //Number of rounds in a game
-        int numRounds = 1;
+        int numRounds = 2;
         //Number of dice in the hand
         int numDice = 0;
         //Number of players in game
@@ -115,15 +115,20 @@ public class Yahtzee {
             for(int i = 0; i<numDice; i++){
                 comp += 'y';
             }
+            //System.out.println(comp);
 
             //Holds the player objects
             ArrayList<Player> players = new ArrayList<>();
 
+            //Initialize player objects
             for(int i = 0; i < numPlayers; i++){
                 players.add(new Player(numSides,numDice));
             }
 
+            //loop through all the rounds
             for(int round = 0; round < numRounds; round++) {
+
+                //Loop through all the players
                 for (int player = 0; player < numPlayers; player++) {
                     //Contains the die objects
                     Hand hand = new Hand(numSides,numDice);
@@ -132,8 +137,11 @@ public class Yahtzee {
                     System.out.println("|      PLAYER " + (player + 1) + "'S TURN      |");
                     System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
                     System.out.println();
+
+                    //loop through all the turns for the player
                     for (int turn = 1; turn <= maxTurns; turn++) {
-                        if(hand.getUserStr().equals(comp))break;
+                        if(hand.getUserStr().equals(comp))break; //if the user does not want to roll any dice then skip other turns
+                        hand.rollDice();
                         hand.printHand();
 
                         //if not the last roll of the hand prompt the user for dice to keep
@@ -141,6 +149,7 @@ public class Yahtzee {
                             boolean correctInput = false;
                             String in = "";
 
+                            //check that the user inputs valid string
                             while(correctInput == false) {
                                 System.out.println("enter dice to keep (y or n)");
                                 in = kb.nextLine();
@@ -151,7 +160,6 @@ public class Yahtzee {
                             hand.setUserStr(in);
                             hand.rollWhich();
                         }
-                        hand.rollDice();
                     }
 
 
@@ -167,9 +175,11 @@ public class Yahtzee {
                     boolean validRow = false;
                     String row;
 
+                    //check that the row entered by user isn't already used and that it is a valid row
                     do {
                         System.out.println("What score will you take for this round");
                         row = kb.next();
+                        validRow = false;
 
                         for(int i = 0; i < players.get(player).getChoices().size(); i++) {
                             if (players.get(player).getChoices().get(i).equals(row)) {
@@ -198,36 +208,39 @@ public class Yahtzee {
                     hand = null;
                     kb.nextLine();
                     System.out.flush();
+                    //players.get(player).printFinalCard();
                 }
             }
 
             int winner = 0;
             boolean tie = false;
 
-            for (int player = 0; player < numPlayers; player++) {
+            //Print final scorecard for the player
+            for (int player = 1; player <= numPlayers; player++) {
                 tie = false;
-                if(players.get(player).getFinalScore() == winner) tie = true;
-                if(players.get(player).getFinalScore() > winner) winner = player;
+                if(players.get(player - 1).getFinalScore() == winner) tie = true;
+                if(players.get(player - 1).getFinalScore() > winner) winner = player;
                 System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
-                System.out.println("|        PLAYER " + (player + 1) + "'S         |");
+                System.out.println("|        PLAYER " + player + "'S         |");
                 System.out.println("|      FINAL SCORECARD      |");
                 System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
-                players.get(player).printFinalCard();
+                players.get(player - 1).printFinalCard();
 
-                if(players.get(player).getFinalScore() >= 10 && players.get(player).getFinalScore() <100){
-                    System.out.println("|     TOTAL SCORE: " + players.get(player).getFinalScore() + "       |");
+                if(players.get(player - 1).getFinalScore() >= 10 && players.get(player - 1).getFinalScore() <100){
+                    System.out.println("|     TOTAL SCORE: " + players.get(player - 1).getFinalScore() + "       |");
                 }
-                else if(players.get(player).getFinalScore() >= 100){
-                    System.out.println("|    TOTAL SCORE: " + players.get(player).getFinalScore() + "      |");
+                else if(players.get(player - 1).getFinalScore() >= 100){
+                    System.out.println("|    TOTAL SCORE: " + players.get(player - 1).getFinalScore() + "       |");
                 }
                 else{
-                    System.out.println("|     TOTAL SCORE: " + players.get(player).getFinalScore() + "        |");
+                    System.out.println("|     TOTAL SCORE: " + players.get(player - 1).getFinalScore() + "        |");
                 }
                 System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
                 System.out.println();
                 System.out.println();
             }
 
+            //Print outcome of the game
             if(tie){
                 System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
                 System.out.println("|        TIE GAME!!!        |");

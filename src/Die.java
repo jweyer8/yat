@@ -1,10 +1,10 @@
 import java.util.*;
 
 /**
- * Class for creating the die object
+ * Class for creating the die object which are used by the hand class
  *
  * @author Jared Weyer
- * @version 1.0
+ * @version 3.0
  */
 public class Die {
     /**

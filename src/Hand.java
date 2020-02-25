@@ -5,7 +5,7 @@ import java.util.Collections;
  * Holds the die objects
  *
  * @author Jared Weyer
- * @version 1.0 2/2/2020
+ * @version 3.0
  * @see Die
  */
 public class Hand {

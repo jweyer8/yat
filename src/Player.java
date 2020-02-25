@@ -1,16 +1,59 @@
 import java.util.ArrayList;
 
+/**
+ * Player class for the each player playing Yahtzee
+ *
+ * @author Jared Weyer
+ * @version 1.0
+ */
 public class Player {
+    /**
+     * Zero value for a score of zero on a row on scorecard
+     */
     private final static int NO_SCORE = 0;
+    /**
+     * If sum of upper scorecard is greater than the cutoff then the player gets the bonus
+     */
+    private int bonusCutoff = 63;
+    /**
+     * Value of the bonus row
+     */
+    private final static int BONUS_VALUE = 35;
+    /**
+     * Number of sides on a die
+     */
     private int numSides;
+    /**
+     * Number of die in a hand
+     */
     private int numDice;
+    /**
+     * Contains the value of the bonus row, the value of this will be 35 if the player meets the cutoff
+     */
+    private int bonus = 0;
+    /**
+     * Contains the string representation of all the rows on the players scorecard
+     */
     private ArrayList<String> choices = new ArrayList<>();
+    /**
+     * Contains the string representation of all the rows that a player has filled on his/her scorecard
+     */
     private ArrayList<String> used = new ArrayList<>();
+    /**
+     * Contains the final scores that a player has received on his/her scorecard
+     */
     private ArrayList<Integer> finalScores = new ArrayList<>();
 
+    /**
+     * EVC for the player class
+     *
+     * @param numSides {link: #numSides}
+     * @param numDice {link: #numDice}
+     */
     public Player(int numSides, int numDice){
         this.numSides = numSides;
         this.numDice = numDice;
+        setBonusCut();
 
         //set upper Score card
         for(int side = 0; side < numSides; side++){
@@ -37,7 +80,15 @@ public class Player {
         finalScores.add(NO_SCORE);
     }
 
+    /**
+     * Sets the final scorecard value to the value that the player received on a given hand on a given row that they want to use for the round
+     *
+     * @param chosen {link: #chosen}
+     * @param scores {link: #chosen}
+     */
     public void setChosenRow(String chosen, ArrayList<Integer> scores){
+        //System.out.println(scores);
+        //Set the final score of the row chosen by the user by comparing the user input with the chosen row
         for(int i = 0; i < choices.size(); i++){
             if(choices.get(i).equals(chosen)){
                 finalScores.set(i,scores.get(i));
@@ -46,13 +97,25 @@ public class Player {
         }
     }
 
-    //get the used ArrayList
+    /**
+     * Gets the used string ArrayList
+     *
+     * @return used {link: #used}
+     */
     public ArrayList<String> getUsed(){return used;}
 
-    //get the choices arraylist
+    /**
+     * Gets choices string ArrayList
+     *
+     * @return choices {link: #choices}
+     */
     public ArrayList<String> getChoices(){return choices;}
 
-    //get the final total score of the scorecard for the player
+    /**
+     * Determine and return the final total score for the player (This is the sum of the scores on each row of scorecard)
+     *
+     * @return Returns the total scores on each row
+     */
     public int getFinalScore(){
         int sum = 0;
         for(int el : finalScores){
@@ -61,10 +124,37 @@ public class Player {
         return sum;
     }
 
-    //Print final scorecard
+    /**
+     * Set the bonus cutoff value (this value corresponds to an average value of three dice for each of the upper scorecard rows)
+     */
+    private void setBonusCut(){
+        int bval = 0;
+        for(int side = 1; side <= numSides; side++){
+            bval += side * 3;
+        }
+        bonusCutoff = bval;
+    }
+
+    /**
+     * Determine if the player reaches the cutoff value needed to get points for the bonus row
+     */
+    private void bonusRow(){
+        int upperSum = 0;
+        for (int die = 1; die <= numSides; die++) {
+            upperSum += finalScores.get(die -1);
+        }
+        if(upperSum >= bonusCutoff){
+            bonus = BONUS_VALUE;
+        }
+    }
+
+    /**
+     * Prints the final scorecard for the player
+     */
     public void printFinalCard(){
         //upper scoreCard
-        for(int die = 1; die <= numDice; die++){
+        //System.out.println(finalScores);
+        for(int die = 1; die <= numSides; die++){
             if(finalScores.get(die -1) >= 10){
                 System.out.println("| Score " + finalScores.get(die - 1) + " on the " + die + "'s line  |");
             }
@@ -73,8 +163,16 @@ public class Player {
             }
         }
 
-        //lower score card
+        //Bonus Row
+        bonusRow();
+        if(bonus == 0) {
+            System.out.println("| Score " + bonus + " on the bonus      |");
+        }
+        else{
+            System.out.println("| Score " + bonus + " on the bonus line|");
+        }
 
+        //lower score card
         //#of a kind
         int maxKind = 0;
         for(int kind = 3; kind < numDice; kind++){
@@ -90,20 +188,47 @@ public class Player {
             maxKind++;
         }
 
-
-        System.out.println("| Score " + finalScores.get(numSides + maxKind) + " on the FH line    |");
-        System.out.println("| Score " + finalScores.get(numSides + 1 + maxKind) + " on the SS line    |");
-        System.out.println("| Score " + finalScores.get(numSides + 2 + maxKind) + " on the LS line    |");
-        System.out.println("| Score " + finalScores.get(numSides + 3 + maxKind) + " on the Y line     |");
-
-        if(finalScores.get(numDice + 1) >= 10 && finalScores.get(numSides + 1 + maxKind) < 100){
-            System.out.println("| Score " + finalScores.get(numSides + 4 + maxKind) + " on the C line    |");
+        //Print Full House
+        if(finalScores.get(numSides + maxKind) >= 10){
+            System.out.println("| Score " + finalScores.get(numSides + maxKind) + " on the FH line   |");
         }
-        else if(finalScores.get(numDice + 1) >= 100){
-            System.out.println("| Score " + finalScores.get(numSides + 4 + maxKind) + " on the C line      |");
+        else{
+            System.out.println("| Score " + finalScores.get(numSides + maxKind) + " on the FH line    |");
+        }
+
+        //Print Small Straight
+        if(finalScores.get(numSides + maxKind + 1) >= 10){
+            System.out.println("| Score " + finalScores.get(numSides + maxKind + 1) + " on the SS line   |");
+        }
+        else{
+            System.out.println("| Score " + finalScores.get(numSides + maxKind + 1) + " on the SS line    |");
+        }
+
+        //Print Large Straight
+        if(finalScores.get(numSides + maxKind + 2) >= 10){
+            System.out.println("| Score " + finalScores.get(numSides + maxKind + 2) + " on the LS line   |");
+        }
+        else{
+            System.out.println("| Score " + finalScores.get(numSides + maxKind + 2) + " on the LS line    |");
+        }
+
+        //Print Yahtzee
+        if(finalScores.get(numSides + maxKind + 3) >= 10){
+            System.out.println("| Score " + finalScores.get(numSides + maxKind + 3) + " on the Y line   |");
+        }
+        else{
+            System.out.println("| Score " + finalScores.get(numSides + maxKind + 3) + " on the Y line     |");
+        }
+
+        //Print chance line
+        if(finalScores.get(numSides + maxKind + 4) >= 10 && finalScores.get(numSides +  maxKind + 4) < 100){
+            System.out.println("| Score " + finalScores.get(numSides + maxKind + 4) + " on the C line    |");
+        }
+        else if(finalScores.get(numSides + maxKind + 4) >= 100){
+            System.out.println("| Score " + finalScores.get(numSides + maxKind + 4) + " on the C line      |");
         }
         else {
-            System.out.println("| Score " + finalScores.get(numSides + 4 + maxKind) + " on the C line     |");
+            System.out.println("| Score " + finalScores.get(numSides + maxKind + 4) + " on the C line     |");
         }
 
         System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
