@@ -194,6 +194,7 @@ public class Yahtzee {
                         System.out.println("What score will you take for this round");
                         row = kb.next();
                         validRow = false;
+                        used = false;
 
                         for(int i = 0; i < players.get(player).getChoices().size(); i++) {
                             if (players.get(player).getChoices().get(i).equals(row)) {
