@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.*;
@@ -21,6 +22,10 @@ public class Yahtzee {
      * @param args takes in command line arguments
      */
     public static void main(String[] args){
+        //GUI
+        JFrame frame = new yahtzeeGUI("Yahtzee");
+        frame.setVisible(true);
+
         //Number of dice in the hand
         int numDice = 0;
         //Number of players in game
