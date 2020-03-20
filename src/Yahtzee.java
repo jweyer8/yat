@@ -20,15 +20,11 @@ public class Yahtzee {
      */
     public static void main(String[] args) {
         //GUI
-        JFrame frame = new gamePlay("Yahtzee");
-        frame.setVisible(true);
-        frame.isResizable();
-        frame.setSize(new Dimension(1000, 500));
-
-        JFrame setupFrame = new JFrame("Yahtzee Setup");
-        setupFrame.isResizable();
-        setupFrame.setSize(1000, 500);
-        setupFrame.setVisible(true);
+        JFrame setup = new setup("Yahtzee");
+        setup.setVisible(true);
+        setup.isResizable();
+        setup.setSize(500,400);
+        setup.setLocation(0,0);
     }
 }
 

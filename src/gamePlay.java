@@ -1,19 +1,17 @@
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-
-import static javax.swing.BorderFactory.createEmptyBorder;
 import static javax.swing.BorderFactory.createEtchedBorder;
 
-
+/**
+ * Game play JFrame
+ */
 public class gamePlay extends JFrame {
 
-    private JPanel rootPanel;
-
     //game play panel fields
+    private JPanel rootPanel;
     private JPanel dieButtonPanel;
     private JButton dieButton1;
     private JButton dieButton2;
@@ -51,7 +49,7 @@ public class gamePlay extends JFrame {
     private JLabel pl4;
 
 
-    //die Icons
+    //die Icons (Images of die sides)
     Icon die0 = new ImageIcon("src/dieImages/die0.png");
     Icon die1 = new ImageIcon("src/dieImages/die1.png");
     Icon die2 = new ImageIcon("src/dieImages/die2.png");
@@ -66,61 +64,81 @@ public class gamePlay extends JFrame {
     Icon die11 = new ImageIcon("src/dieImages/die11.png");
     Icon die12 = new ImageIcon("src/dieImages/die12.png");
 
+    //contains the value of rounds played
     private int round = 0;
-    //
+    //contains the turn in which a player is on
     private int turn = 0;
-    //
+    //contains the number of players in the game
     private int playerCount = 0;
     //Number of dice in the hand
-    private int numDice = 6;
+    private int numDice;
     //Number of players in game
-    private int numPlayers = 2;
+    private int numPlayers;
     //Number of sides on the dice
-    private int numSides = 6;
-    //Number of turns
+    private int numSides;
+    //Number of turns per player
     private int maxTurns = 3;
-    //hand
-    private Hand hand = new Hand(numSides, numDice);
+    //holds an array of die objects
+    private Hand hand;
+    //number of rounds in a game
+    int numRounds = 3;//players.get(0).getChoices().size();
 
 
-
-
-    public gamePlay(String title) {
+    /**
+     * Contains all code to play yahtzee on GUI
+     *
+     * @param title header of frame
+     */
+    public gamePlay(String title, int numPlayers,int numDice, int numSides) {
         super(title);
         setResizable(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(rootPanel);
+        this.setVisible(true);
+        this.setPreferredSize(new Dimension(1000,600));
 
+        //set game values
+        this.numPlayers = numPlayers;
+        this.numDice = numDice;
+        this.numSides = numSides;
+        hand = new Hand(numSides, numDice);
 
         //create borders
         Border border = dieButtonPanel.getBorder();
         Border margin = new EmptyBorder(20, 20, 20, 20);
         Border noSpace = new EmptyBorder(0,0,0,0);
-        rootPanel.setBorder(new CompoundBorder(border,margin));
         Border bl = BorderFactory.createCompoundBorder(new EtchedBorder(Color.black,Color.white),noSpace);
+        Border margin2 = new EmptyBorder(75, 5, 0, 0);
+        Border cbl = BorderFactory.createCompoundBorder(new EmptyBorder(0,0,0,0),new EtchedBorder(Color.black,Color.white));
+
+        //set borders
+        rootPanel.setBorder(new CompoundBorder(border,margin));
         scorecardLabel.setBorder(bl);
         playerFinalScoreLabel.setBorder(bl);
         dieButtonPanel.setBorder(BorderFactory.createCompoundBorder(new EtchedBorder(Color.black,Color.white),new EmptyBorder(20,20,20,20)));
         gameStatsPanel.setBorder(BorderFactory.createCompoundBorder(new EtchedBorder(Color.black,Color.white),new EmptyBorder(20,20,20,20)));
-        gameStatsPanel.setVisible(false);
-        scorecardLabel.setVisible(false);
-        selectScoreCombo.setVisible(false);
-        selectScoreLabel.setVisible(false);
-        selectScoreCombo.setEnabled(false);
-        Border margin2 = new EmptyBorder(75, 5, 0, 0);
-        Border cbl = BorderFactory.createCompoundBorder(new EmptyBorder(0,0,0,0),new EtchedBorder(Color.black,Color.white));
         selectScoreCombo.setBorder(cbl);
         selectScoreLabel.setBorder(cbl);
-        selectScoreLabel.setText("<html><br/> &nbsp &nbsp &nbsp &nbsp SELECT SCORE &nbsp &nbsp &nbsp &nbsp  <br/><br/></html>");
-        selectScoreCombo.setPrototypeDisplayValue("                                    ");
-        takeScoreButton.setVisible(false);
-        playerFinalScoreLabel.setVisible(false);
-
+        //border for the die buttons
         for(Component c : gameStatsPanel.getComponents()){
             ((JPanel)c).setBorder(bl);
         }
 
 
+        //set text for components
+        selectScoreLabel.setText("<html><br/> &nbsp &nbsp &nbsp &nbsp SELECT SCORE &nbsp &nbsp &nbsp &nbsp  <br/><br/></html>");
+        selectScoreCombo.setPrototypeDisplayValue("                                    ");
+        turnLabel.setText(turnLabel.getText() + " " + Integer.toString(turn));
+
+        //set visibility of components
+        gameStatsPanel.setVisible(false);
+        scorecardLabel.setVisible(false);
+        selectScoreCombo.setVisible(false);
+        selectScoreLabel.setVisible(false);
+        selectScoreCombo.setEnabled(false);
+        takeScoreButton.setVisible(false);
+        playerFinalScoreLabel.setVisible(false);
+        //set player stat components visible based on number of players
         int counter = 0;
         for(Component c : gameStatsPanel.getComponents()){
             if(c instanceof JPanel){
@@ -130,7 +148,7 @@ public class gamePlay extends JFrame {
                 counter++;
             }
         }
-
+        //set die buttons visible based on number of die in the game
         counter = 0;
         for (Component c : dieButtonPanel.getComponents()) {
             if (c instanceof JButton) {
@@ -145,9 +163,8 @@ public class gamePlay extends JFrame {
             }
         }
 
-        turnLabel.setText(turnLabel.getText() + " " + Integer.toString(turn));
 
-////////////////////////////////////////
+        //intitialize player array
         //Holds the player objects
         ArrayList<Player> players = new ArrayList<>();
 
@@ -156,29 +173,28 @@ public class gamePlay extends JFrame {
             players.add(new Player(numSides, numDice));
         }
 
-        //Set number of rounds which is equal to the number of rows not including the bonus row
-        int numRounds = 3;//players.get(0).getChoices().size();
-
-       // Scoring score = new Scoring(hand,players.get(playerCount));
-
-
-///////////////////////////////////////
-
+        //Set same action listener for all die buttons
         for (Component c : dieButtonPanel.getComponents()) {
             if (c instanceof JButton) {
                 ((JButton) c).addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+
+                        //Preform actions based on whether the die has already been  selected
                         if (((JButton) c).isSelected() == false) {
                             ((JButton) c).setSelected(true);
                             Border border = createEtchedBorder(Color.white, Color.green);
                             ((JButton) c).setBorder(border);
+
+                            //change the die objects to selected if die button is selected
                             for (int i = 0; i < dieButtonPanel.getComponentCount(); i++) {
                                 if (((JButton) c).equals(dieButtonPanel.getComponent(i))) {
                                     hand.setDieKeep('y', i);
                                 }
                             }
                         }
+
+                        //if die button already selected then change back to non selected
                         else{
                             ((JButton) c).setSelected(false);
                             ((JButton) c).setOpaque(false);
@@ -191,32 +207,40 @@ public class gamePlay extends JFrame {
                                 }
                             }
                         }
-                        allDieSelected();
+                        allDieSelected(players);
                     }
                 });
             }
         }
 
+        //set what to do when player pushes roll button
         RollButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                //enable die buttons so that user can interact
                 for (Component c : dieButtonPanel.getComponents()) {
                     if (c instanceof JButton) {
                         ((JButton)c).setEnabled(true);
                     }
                 }
 
+                //do nececary backend for the certain turn
                 hand.rollDice();
+                Scoring score = new Scoring(hand,players.get(playerCount));
                 turn++;
-                playerFinalScoreLabel.setVisible(true);
                 players.get(playerCount).clearSb();
+
+                //set visibility and text of components
+                playerFinalScoreLabel.setVisible(true);
                 playerFinalScoreLabel.setText(players.get(playerCount).printFinalCard().toString());
                 selectScoreCombo.setVisible(true);
                 selectScoreLabel.setVisible(true);
                 gameStatsPanel.setVisible(true);
-                Scoring score = new Scoring(hand,players.get(playerCount));
                 scorecardLabel.setText(score.printScore().toString());
                 scorecardLabel.setVisible(true);
+
+                //set the images that die button displays based on values of hand
                 int count = 0;
                 for (Component c : dieButtonPanel.getComponents()) {
                     if (c instanceof JButton && count < numDice) {
@@ -264,6 +288,7 @@ public class gamePlay extends JFrame {
                     }
                 }
 
+                //when no more turns make user select a score for that round and reset for next player
                 if (turn == maxTurns){
                     RollButton.setEnabled(false);
                     setComboItems(players,playerCount);
@@ -279,11 +304,11 @@ public class gamePlay extends JFrame {
                         }
                     }
                 }
-
                 turnLabel.setText("TURN " + Integer.toString(turn));
             }
         });
 
+        //set actions to be preformed when a user selects a score for the round
         takeScoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -294,12 +319,14 @@ public class gamePlay extends JFrame {
                 players.get(playerCount).setChosenRow(chosen,score.getScores());
                 gameStatsPanel.setVisible(false);
 
+                //get all players total scores and display, winning player will be shown
                 ArrayList<Integer> playerScores = new ArrayList<>();
                 for(int i = 0; i<numPlayers; i++){
                     playerScores.add(0);
                 }
                 int winingScore = 0;
 
+                //set player scores
                 switch(playerCount){
                     case 0:
                         playerScores.set(0,players.get(playerCount).getFinalScore());
@@ -319,6 +346,7 @@ public class gamePlay extends JFrame {
                         break;
                 }
 
+                //change border of winning player
                 int winP = 0;
                 for(int i = 0; i<numPlayers; i++){
                     if(playerScores.get(i) > winingScore){
@@ -335,7 +363,7 @@ public class gamePlay extends JFrame {
                     ((JPanel) gameStatsPanel.getComponent(winP)).setBorder(new EtchedBorder(Color.ORANGE,Color.white));
                 }
 
-
+                //reset for next player
                 RollButton.setEnabled(true);
                 turn = 0;
                 playerCount++;
@@ -344,10 +372,12 @@ public class gamePlay extends JFrame {
                     playerCount = 0;
                     round++;
                     if(round == numRounds){
-                        rootPanel.setVisible(false);
+                        JFrame gameOver = new gameOver("Yaytzee");
+                        gameOver.setVisible(true);
                     }
                 }
 
+                //reset components for next player
                 playerLabel.setText("PLAYER " + Integer.toString(playerCount + 1));
                 turnLabel.setText("TURN 0");
                 selectScoreCombo.setSelectedIndex(0);
@@ -359,6 +389,7 @@ public class gamePlay extends JFrame {
                 playerFinalScoreLabel.setVisible(false);
                 RollButton.setEnabled(true);
 
+                //reset buttons for next player
                 for (Component c : dieButtonPanel.getComponents()) {
                     if(c instanceof JButton){
                         ((JButton) c).setIcon(die0);
@@ -379,40 +410,55 @@ public class gamePlay extends JFrame {
     }
 
 
+    /**
+     * sets the combo box based off what options the player has left
+     *
+     * @param players holds array of player objects
+     * @param playerNum holds the position of the certain player in the players array
+     */
+    public void setComboItems(ArrayList<Player> players,int playerNum){
+        ArrayList<String> used = players.get(playerNum).getUsed(); //the rows that the player has used
+        ArrayList<String> choices = players.get(playerNum).getChoices(); //all the rows avalible to player
+        selectScoreCombo.setMaximumRowCount(choices.size() - used.size()); //make so no scroll bar
+        selectScoreCombo.removeAllItems(); //reset combobox
+        boolean isUsed = false;
 
-        public void setComboItems(ArrayList<Player> players,int playerNum){
-            ArrayList<String> used = players.get(playerNum).getUsed();
-            ArrayList<String> choices = players.get(playerNum).getChoices();
-            selectScoreCombo.setMaximumRowCount(choices.size() - used.size());
-            selectScoreCombo.removeAllItems();
-            boolean isUsed = false;
-            for (String s : choices){
-                for (String s2: used){
-                   if (s.equals(s2)){
-                       isUsed = true;
-                   }
+        //create combo box option for all rows that the player hasnt used
+        for (String s : choices){
+            for (String s2: used){
+                if (s.equals(s2)){
+                    isUsed = true;
                 }
-                if (!(isUsed)){
-                    selectScoreCombo.addItem(s);
-                }
-              isUsed = false;
             }
+            if (!(isUsed)){
+                selectScoreCombo.addItem(s);
+            }
+            isUsed = false;
         }
+    }
 
-    public void allDieSelected() {
+    /**
+     * allows player to take score if all die are select even tho they have more turn avalible to them
+     *
+     * @param players array of player objects
+     */
+    public void allDieSelected(ArrayList<Player> players) {
         boolean allSelected = true;
         for (Component c : dieButtonPanel.getComponents()) {
             if(c instanceof JButton) {
-                if (((JButton) c).isSelected() == false) {
+                if (((JButton) c).isSelected() == false && ((JButton)c).isVisible() == true){
                     allSelected = false;
                 }
             }
         }
         if (allSelected == true) {
             RollButton.setEnabled(false);
+            setComboItems(players,playerCount);
             selectScoreCombo.setEnabled(true);
+            takeScoreButton.setVisible(true);
         }
     }
+
 }
 
 
