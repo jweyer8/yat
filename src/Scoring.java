@@ -43,6 +43,8 @@ public class Scoring{
      */
     ArrayList<Integer> scores = new ArrayList<>();
 
+    StringBuilder sb = new StringBuilder();
+
     /**
      * EVC for the scoring class
      *
@@ -56,17 +58,20 @@ public class Scoring{
 
     /**
      * Print the score for upper and lower scorecard
+     * @return
      */
-    public void printScore(){
-        System.out.println();
-        System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
-        System.out.println("|          SCORES           |");
-        System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
+    public StringBuilder printScore(){
+        sb.append("<html>");
+        sb.append("<br/>");
+        sb.append("<center><b> HAND SCORES </b></center>");
         upperScore();
         lowerScore();
-        System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
-        System.out.println();
+        sb.append(System.getProperty("line.separator"));
+        sb.append("</html>");
+        return sb;
     }
+
+    public void clearScores(){scores.clear();}
 
     /**
      *Gets the scores corresponding to each row on the scorecard for the given hand
@@ -136,10 +141,14 @@ public class Scoring{
             if(!(isUsed)){
                 scores.add(hand.getDup().get(diceVal - 1) * diceVal);
                 if(hand.getDup().get(diceVal - 1) * diceVal >= 10){
-                    System.out.println("| Score " + hand.getDup().get(diceVal - 1) * diceVal + " on the " + diceVal + "'s line  |");
+                    sb.append("<br/>");
+                    sb.append("<hr>");
+                    sb.append(" Score " + hand.getDup().get(diceVal - 1) * diceVal + " on the " + diceVal + "'s line  ");
                 }
                 else {
-                    System.out.println("| Score " + hand.getDup().get(diceVal - 1) * diceVal + " on the " + diceVal + "'s line   |");
+                    sb.append("<br/>");
+                    sb.append("<hr>");
+                    sb.append(" Score " + hand.getDup().get(diceVal - 1) * diceVal + " on the " + diceVal + "'s line   ");
                 }
             }
             isUsed = false;
@@ -174,15 +183,10 @@ public class Scoring{
                     if(kind == hand.getNumDice()){yaht = true;} //hand contains a yahtzee
                     else {
                         scores.add(hand.sumDice());
-                        if(hand.sumDice() >= 10 && hand.sumDice() < 100){
-                            System.out.println("| Score " + hand.sumDice() + " on the " + kind + "K line   |");
-                        }
-                        else if(hand.sumDice() >= 100){
-                            System.out.println("| Score " + hand.sumDice() + " on the " + kind + "K line  |");
-                        }
-                        else{
-                            System.out.println("| Score " + hand.sumDice() + " on the " + kind + "K line    |");
-                        }
+                        sb.append("<br/>");
+                        sb.append("<hr>");
+                        sb.append(" Score " + hand.sumDice() + " on the " + kind + "K line   ");
+
                         hasKind = true;
                     }
                     break;
@@ -190,7 +194,9 @@ public class Scoring{
             }
             if(!(hasKind) && kind != hand.getNumDice() && !(isUsed)){
                 scores.add(NO_SCORE);
-                System.out.println("| Score " + NO_SCORE + " on the " + kind + "K line    |");
+                sb.append("<br/>");
+                sb.append("<hr>");
+                sb.append(" Score " + NO_SCORE + " on the " + kind + "K line    ");
             }
         }
 
@@ -225,11 +231,15 @@ public class Scoring{
         if(!(fh)) {
             if(fullHouse()){
                 scores.add(FULL_HOUSE_SCORE);
-                System.out.println("| Score " + FULL_HOUSE_SCORE + " on the FH line   |");
+                sb.append("<br/>");
+                sb.append("<hr>");
+                sb.append(" Score " + FULL_HOUSE_SCORE + " on the FH line   ");
             }
             else{
                 scores.add(NO_SCORE);
-                System.out.println("| Score " + NO_SCORE + " on the FH line    |");
+                sb.append("<br/>");
+                sb.append("<hr>");
+                sb.append(" Score " + NO_SCORE + " on the FH line    ");
             }
         }
         else{
@@ -240,11 +250,15 @@ public class Scoring{
         if(!(ss)) {
             if(straits() == 4){
                 scores.add(SMALL_STRAIGHT_SCORE);
-                System.out.println("| Score " + SMALL_STRAIGHT_SCORE + " on the SS line   |");
+                sb.append("<br/>");
+                sb.append("<hr>");
+                sb.append(" Score " + SMALL_STRAIGHT_SCORE + " on the SS line   ");
             }
             else{
                 scores.add(NO_SCORE);
-                System.out.println("| Score " + NO_SCORE + " on the SS line    |");
+                sb.append("<br/>");
+                sb.append("<hr>");
+                sb.append(" Score " + NO_SCORE + " on the SS line    ");
             }
         }
         else{
@@ -255,11 +269,15 @@ public class Scoring{
         if(!(ls)) {
             if(straits() >= 5){
                 scores.add(LARGE_STRAIGHT_SCORE);
-                System.out.println("| Score " + LARGE_STRAIGHT_SCORE + " on the LS line   |");
+                sb.append("<br/>");
+                sb.append("<hr>");
+                sb.append(" Score " + LARGE_STRAIGHT_SCORE + " on the LS line   ");
             }
             else{
                 scores.add(NO_SCORE);
-                System.out.println("| Score " + NO_SCORE + " on the LS line    |");}
+                sb.append("<br/>");
+                sb.append("<hr>");
+                sb.append(" Score " + NO_SCORE + " on the LS line    ");}
         }
         else{
             scores.add(-1);
@@ -269,11 +287,15 @@ public class Scoring{
         if(!(y)) {
             if (yaht){
                 scores.add(YAHTZEE_SCORE);
-                System.out.println("| Score " + YAHTZEE_SCORE + " on the Y line    |");
+                sb.append("<br/>");
+                sb.append("<hr>");
+                sb.append(" Score " + YAHTZEE_SCORE + " on the Y line    ");
             }
             else{
                 scores.add(NO_SCORE);
-                System.out.println("| Score " + NO_SCORE + " on the Y line     |");
+                sb.append("<br/>");
+                sb.append("<hr>");
+                sb.append(" Score " + NO_SCORE + " on the Y line     ");
             }
         }
         else{
@@ -283,15 +305,9 @@ public class Scoring{
         //Print out the sum of the dice for the chance score
         if(!(c)){
             scores.add(hand.sumDice());
-            if(hand.sumDice() >= 10){
-                System.out.println("| Score " + hand.sumDice() + " on the C line    |");
-            }
-            else if(hand.sumDice() >= 100){
-                System.out.println("| Score " + hand.sumDice() + " on the C line   |");
-            }
-            else {
-                System.out.println("| Score " + hand.sumDice() + " on the C line     |");
-            }
+            sb.append("<br/>");
+            sb.append("<hr>");
+            sb.append(" Score " + hand.sumDice() + " on the C line    ");
         }
         else{
             scores.add(-1);

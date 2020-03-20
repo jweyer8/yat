@@ -1,5 +1,7 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.*;
 
 /**
  * Holds the die objects
@@ -33,6 +35,7 @@ public class Hand {
      * Contains the user input string which determines which die in the hand should be rolled
      */
     private String userStr;
+
 
 
 
@@ -73,10 +76,12 @@ public class Hand {
      */
     public void printHand(){
         System.out.print("Your roll was: ");
+        JPanel dieButtonPanel = new JPanel();
+        JButton dieButton = new JButton("Die");
         for (int dieCount = 0; dieCount < numDice; dieCount++) {
-            System.out.print(hand.get(dieCount).getValue() + " ");
+            dieButtonPanel.add(dieButton);
+           // System.out.print(hand.get(dieCount).getValue() + " ");
         }
-        System.out.println();
     }
     /**
      * Rolls the die in the hand that the user wants to roll
@@ -89,14 +94,7 @@ public class Hand {
         vals();
         duplicate();
     }
-    /**
-     * Sets the die keep attribute which determines if the die will be rolled
-     */
-    public void rollWhich(){
-        for(int dieCount = 0; dieCount < numDice; dieCount++) {
-            hand.get(dieCount).setKeep(userStr.charAt(dieCount));
-        }
-    }
+
     /**
      * Method for summing the total value of the dice rolled
      *
@@ -130,12 +128,9 @@ public class Hand {
             dup.set(dieVal-1,dupCount);
         }
     }
-    /**
-     * Sets the user input
-     *
-     * @param userStr {@link #userStr}
-     */
-    public void setUserStr(String userStr){this.userStr = userStr;}
+
+
+    public void setDieKeep(char keep, int pos){hand.get(pos).setKeep(keep);}
     /**
      * Gets the dup ArrayList which is used to score the hand
      * @return dup {@link #dup}

@@ -44,6 +44,8 @@ public class Player {
      */
     private ArrayList<Integer> finalScores = new ArrayList<>();
 
+    public StringBuilder sb = new StringBuilder();
+
     /**
      * EVC for the player class
      *
@@ -111,6 +113,8 @@ public class Player {
      */
     public ArrayList<String> getChoices(){return choices;}
 
+    public void clearSb(){sb.setLength(0);}
+
     /**
      * Determine and return the final total score for the player (This is the sum of the scores on each row of scorecard)
      *
@@ -151,85 +155,103 @@ public class Player {
     /**
      * Prints the final scorecard for the player
      */
-    public void printFinalCard(){
+    public StringBuilder printFinalCard(){
         //upper scoreCard
+        sb.append("<html><BR/><CENTER> FINAL SCORECARD </CENTER>");
         for(int side = 1; side <= numSides; side++){
-            if(finalScores.get(side -1) >= 10){
-                System.out.println("| Score " + finalScores.get(side - 1) + " on the " + side + "'s line  |");
-            }
-            else {
-                System.out.println("| Score " + finalScores.get(side - 1) + " on the " + side + "'s line   |");
-            }
+            sb.append("<br/>");
+            sb.append("<hr>");
+            sb.append(" Score " + finalScores.get(side - 1) + " on the " + side + "'s line  ");
         }
 
         //Bonus Row
         bonusRow();
         if(bonus == 0) {
-            System.out.println("| Score " + bonus + " on the bonus      |");
+            sb.append("<br/>");
+            sb.append("<hr>");
+            sb.append(" Score " + bonus + " on the bonus      ");
         }
         else{
-            System.out.println("| Score " + bonus + " on the bonus line|");
+            sb.append("<br/>");
+            sb.append("<hr>");
+            sb.append(" Score " + bonus + " on the bonus line");
         }
 
         //lower score card
         //#of a kind
         int maxKind = 0;
         for(int kind = 3; kind < numDice; kind++){
-            if(finalScores.get(numSides + maxKind) >= 10 && finalScores.get(numSides + maxKind) < 100){
-                System.out.println("| Score " + finalScores.get(numSides + maxKind) + " on the " + kind + "K line   |");
-            }
-            else if(finalScores.get(numSides + maxKind) >= 100){
-                System.out.println("| Score " + finalScores.get(numSides + maxKind) + " on the " + kind + "K line  |");
-            }
-            else{
-                System.out.println("| Score " + finalScores.get(numSides + maxKind) + " on the " + kind + "K line    |");
-            }
+            sb.append("<br/>");
+            sb.append("<hr>");
+            sb.append(" Score " + finalScores.get(numSides + maxKind) + " on the " + kind + "K line   ");
             maxKind++;
         }
 
         //Print Full House
         if(finalScores.get(numSides + maxKind) >= 10){
-            System.out.println("| Score " + finalScores.get(numSides + maxKind) + " on the FH line   |");
+            sb.append("<br/>");
+            sb.append("<hr>");
+            sb.append(" Score " + finalScores.get(numSides + maxKind) + " on the FH line   ");
         }
         else{
-            System.out.println("| Score " + finalScores.get(numSides + maxKind) + " on the FH line    |");
+            sb.append("<br/>");
+            sb.append("<hr>");
+            sb.append(" Score " + finalScores.get(numSides + maxKind) + " on the FH line    ");
         }
 
         //Print Small Straight
         if(finalScores.get(numSides + maxKind + 1) >= 10){
-            System.out.println("| Score " + finalScores.get(numSides + maxKind + 1) + " on the SS line   |");
+            sb.append("<br/>");
+            sb.append("<hr>");
+            sb.append(" Score " + finalScores.get(numSides + maxKind + 1) + " on the SS line   ");
         }
         else{
-            System.out.println("| Score " + finalScores.get(numSides + maxKind + 1) + " on the SS line    |");
+            sb.append("<br/>");
+            sb.append("<hr>");
+            sb.append(" Score " + finalScores.get(numSides + maxKind + 1) + " on the SS line    ");
         }
 
         //Print Large Straight
         if(finalScores.get(numSides + maxKind + 2) >= 10){
-            System.out.println("| Score " + finalScores.get(numSides + maxKind + 2) + " on the LS line   |");
+            sb.append("<br/>");
+            sb.append("<hr>");
+            sb.append(" Score " + finalScores.get(numSides + maxKind + 2) + " on the LS line   ");
         }
         else{
-            System.out.println("| Score " + finalScores.get(numSides + maxKind + 2) + " on the LS line    |");
+            sb.append("<br/>");
+            sb.append("<hr>");
+            sb.append(" Score " + finalScores.get(numSides + maxKind + 2) + " on the LS line    ");
         }
 
         //Print Yahtzee
         if(finalScores.get(numSides + maxKind + 3) >= 10){
-            System.out.println("| Score " + finalScores.get(numSides + maxKind + 3) + " on the Y line   |");
+            sb.append("<br/>");
+            sb.append("<hr>");
+            sb.append(" Score " + finalScores.get(numSides + maxKind + 3) + " on the Y line   ");
         }
         else{
-            System.out.println("| Score " + finalScores.get(numSides + maxKind + 3) + " on the Y line     |");
+            sb.append("<br/>");
+            sb.append("<hr>");
+            sb.append(" Score " + finalScores.get(numSides + maxKind + 3) + " on the Y line     ");
         }
 
         //Print chance line
         if(finalScores.get(numSides + maxKind + 4) >= 10 && finalScores.get(numSides +  maxKind + 4) < 100){
-            System.out.println("| Score " + finalScores.get(numSides + maxKind + 4) + " on the C line    |");
+            sb.append("<br/>");
+            sb.append("<hr>");
+            sb.append(" Score " + finalScores.get(numSides + maxKind + 4) + " on the C line    ");
         }
         else if(finalScores.get(numSides + maxKind + 4) >= 100){
-            System.out.println("| Score " + finalScores.get(numSides + maxKind + 4) + " on the C line      |");
+            sb.append("<br/>");
+            sb.append("<hr>");
+            sb.append(" Score " + finalScores.get(numSides + maxKind + 4) + " on the C line      ");
         }
         else {
-            System.out.println("| Score " + finalScores.get(numSides + maxKind + 4) + " on the C line     |");
+            sb.append("<br/>");
+            sb.append("<hr>");
+            sb.append(" Score " + finalScores.get(numSides + maxKind + 4) + " on the C line     ");
         }
-
-        System.out.println("+-=-=-=-=-=-=-=-=-=-=-=-=-=-+");
+        sb.append("</html>");
+        return sb;
     }
 }
