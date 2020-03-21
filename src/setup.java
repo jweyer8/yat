@@ -1,10 +1,12 @@
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 public class setup extends JFrame{
     private JComboBox playerCombo;
@@ -31,11 +33,13 @@ public class setup extends JFrame{
         gameSetupPanel.setBorder(new EmptyBorder(20,20,20,20));
         setupRoot.setBorder(new EmptyBorder(20,20,20,20));
         Border border = new EtchedBorder(Color.black,Color.white);
-        startButton.setBorder(border);
+        startButton.setBorder(new CompoundBorder(new EtchedBorder(Color.black,Color.white),new EmptyBorder(5,5,5,5)));
         sidesCombo.setBorder(border);
         dieCombo.setBorder(border);
         playerCombo.setBorder(border);
         startButton.setPreferredSize(new Dimension(50,50));
+        welcomeLabel.setFont(new Font("serif",Font.PLAIN,30));
+
 
 
         //set combo items
@@ -49,8 +53,11 @@ public class setup extends JFrame{
         }
 
         dieCombo.setMaximumRowCount(3);
+        dieCombo.setSelectedIndex(4);
         playerCombo.setMaximumRowCount(3);
+        playerCombo.setSelectedIndex(3);
         sidesCombo.setMaximumRowCount(3);
+        sidesCombo.setSelectedIndex(5);
 
 
 
@@ -58,8 +65,7 @@ public class setup extends JFrame{
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setupRoot.setVisible(false);
-
+                dispose();
                 //get game values
                 numPlayers = (Integer) (Integer.parseInt(playerCombo.getSelectedItem().toString().trim()));
                 numDice = (Integer) (Integer.parseInt(dieCombo.getSelectedItem().toString().trim()));

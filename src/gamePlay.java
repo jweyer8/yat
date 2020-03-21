@@ -50,6 +50,8 @@ public class gamePlay extends JFrame {
 
 
     //die Icons (Images of die sides)
+    Icon dieRoll = new ImageIcon("src/dieImages/dieRoll2.png");
+    Icon dieTake = new ImageIcon("src/dieImages/dieTake.png");
     Icon die0 = new ImageIcon("src/dieImages/die0.png");
     Icon die1 = new ImageIcon("src/dieImages/die1.png");
     Icon die2 = new ImageIcon("src/dieImages/die2.png");
@@ -77,11 +79,9 @@ public class gamePlay extends JFrame {
     //Number of sides on the dice
     private int numSides;
     //Number of turns per player
-    private int maxTurns = 3;
+    private int maxTurns = 1;
     //holds an array of die objects
     private Hand hand;
-    //number of rounds in a game
-    int numRounds = 3;//players.get(0).getChoices().size();
 
 
     /**
@@ -119,6 +119,7 @@ public class gamePlay extends JFrame {
         gameStatsPanel.setBorder(BorderFactory.createCompoundBorder(new EtchedBorder(Color.black,Color.white),new EmptyBorder(20,20,20,20)));
         selectScoreCombo.setBorder(cbl);
         selectScoreLabel.setBorder(cbl);
+        scoreFunctionPanel.setBorder(BorderFactory.createCompoundBorder(new EtchedBorder(Color.black,Color.white), new EmptyBorder(10,10,10,10)));
         //border for the die buttons
         for(Component c : gameStatsPanel.getComponents()){
             ((JPanel)c).setBorder(bl);
@@ -126,11 +127,14 @@ public class gamePlay extends JFrame {
 
 
         //set text for components
+        takeScoreButton.setIcon(dieTake);
+        RollButton.setIcon(dieRoll);
         selectScoreLabel.setText("<html><br/> &nbsp &nbsp &nbsp &nbsp SELECT SCORE &nbsp &nbsp &nbsp &nbsp  <br/><br/></html>");
         selectScoreCombo.setPrototypeDisplayValue("                                    ");
         turnLabel.setText(turnLabel.getText() + " " + Integer.toString(turn));
 
         //set visibility of components
+        scoreFunctionPanel.setVisible(false);
         gameStatsPanel.setVisible(false);
         scorecardLabel.setVisible(false);
         selectScoreCombo.setVisible(false);
@@ -172,6 +176,9 @@ public class gamePlay extends JFrame {
         for (int i = 0; i < numPlayers; i++) {
             players.add(new Player(numSides, numDice));
         }
+
+        //number of rounds in a game
+        int numRounds = players.get(0).getChoices().size();
 
         //Set same action listener for all die buttons
         for (Component c : dieButtonPanel.getComponents()) {
@@ -217,7 +224,6 @@ public class gamePlay extends JFrame {
         RollButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 //enable die buttons so that user can interact
                 for (Component c : dieButtonPanel.getComponents()) {
                     if (c instanceof JButton) {
@@ -232,6 +238,7 @@ public class gamePlay extends JFrame {
                 players.get(playerCount).clearSb();
 
                 //set visibility and text of components
+                scoreFunctionPanel.setVisible(true);
                 playerFinalScoreLabel.setVisible(true);
                 playerFinalScoreLabel.setText(players.get(playerCount).printFinalCard().toString());
                 selectScoreCombo.setVisible(true);
@@ -318,6 +325,7 @@ public class gamePlay extends JFrame {
                 score.printScore();
                 players.get(playerCount).setChosenRow(chosen,score.getScores());
                 gameStatsPanel.setVisible(false);
+                scoreFunctionPanel.setVisible(false);
 
                 //get all players total scores and display, winning player will be shown
                 ArrayList<Integer> playerScores = new ArrayList<>();
@@ -372,8 +380,10 @@ public class gamePlay extends JFrame {
                     playerCount = 0;
                     round++;
                     if(round == numRounds){
-                        JFrame gameOver = new gameOver("Yaytzee");
+                        dispose();
+                        JFrame gameOver = new gameOver("Yaytzee",winP,winingScore);
                         gameOver.setVisible(true);
+                        gameOver.setPreferredSize(new Dimension(50,50));
                     }
                 }
 
@@ -407,6 +417,7 @@ public class gamePlay extends JFrame {
             }
         });
         this.pack();
+
     }
 
 
