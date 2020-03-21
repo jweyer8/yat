@@ -43,8 +43,10 @@ public class Player {
      * Contains the final scores that a player has received on his/her scorecard
      */
     private ArrayList<Integer> finalScores = new ArrayList<>();
-
-    public StringBuilder sb = new StringBuilder();
+    /**
+     * string to print on GUI
+     */
+    private StringBuilder sb = new StringBuilder();
 
     /**
      * EVC for the player class
@@ -89,7 +91,6 @@ public class Player {
      * @param scores {link: #chosen}
      */
     public void setChosenRow(String chosen, ArrayList<Integer> scores){
-        //System.out.println(scores);
         //Set the final score of the row chosen by the user by comparing the user input with the chosen row
         for(int i = 0; i < choices.size(); i++){
             if(choices.get(i).equals(chosen)){
@@ -157,7 +158,7 @@ public class Player {
      */
     public StringBuilder printFinalCard(){
         //upper scoreCard
-        sb.append("<html><BR/><CENTER> FINAL SCORECARD </CENTER>");
+        sb.append("<html><BR/><CENTER><b> FINAL SCORECARD </b></CENTER>");
         for(int side = 1; side <= numSides; side++){
             sb.append("<br/>");
             sb.append("<hr>");

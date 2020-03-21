@@ -6,8 +6,10 @@ import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 
+/**
+ * Setup frame which gets the games basic values from the user
+ */
 public class setup extends JFrame{
     private JComboBox playerCombo;
     private JComboBox dieCombo;
@@ -20,10 +22,16 @@ public class setup extends JFrame{
     private JLabel dieLabel;
     private JLabel sidesLabel;
 
+    //basic game numbers
     private int numPlayers = 0;
     private int numDice = 0;
     private int numSides = 0;
 
+    /**
+     * EVC for the setup class
+     *
+     * @param title title of the frame
+     */
     public setup(String title){
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,6 +47,9 @@ public class setup extends JFrame{
         playerCombo.setBorder(border);
         startButton.setPreferredSize(new Dimension(50,50));
         welcomeLabel.setFont(new Font("serif",Font.PLAIN,30));
+        dieLabel.setFont(new Font("serif",Font.PLAIN,15));
+        sidesLabel.setFont(new Font("serif",Font.PLAIN,15));
+        playerLabel.setFont(new Font("serif",Font.PLAIN,15));
 
 
 
@@ -52,6 +63,7 @@ public class setup extends JFrame{
             sidesCombo.addItem(Integer.toString(i));
         }
 
+        //set the max length of combo and set the default game values
         dieCombo.setMaximumRowCount(3);
         dieCombo.setSelectedIndex(4);
         playerCombo.setMaximumRowCount(3);
@@ -65,13 +77,14 @@ public class setup extends JFrame{
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
+                dispose(); //get rid of this frame
                 //get game values
                 numPlayers = (Integer) (Integer.parseInt(playerCombo.getSelectedItem().toString().trim()));
                 numDice = (Integer) (Integer.parseInt(dieCombo.getSelectedItem().toString().trim()));
                 numSides = (Integer) (Integer.parseInt(sidesCombo.getSelectedItem().toString().trim()));
 
-                JFrame game = new gamePlay("Yahtzee", numPlayers, numDice, numSides);
+                //create the main game frame
+                JFrame game = new gamePlay("", numPlayers, numDice, numSides);
             }
         });
     }

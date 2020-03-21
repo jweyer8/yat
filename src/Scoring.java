@@ -37,13 +37,15 @@ public class Scoring{
     /**
      * Contains the string representation of the rows that the player has already used
      */
-    ArrayList<String> used = new ArrayList<>();
+    private ArrayList<String> used = new ArrayList<>();
     /**
      * Contains the scores for each row of the scorecard for the given hand
      */
-    ArrayList<Integer> scores = new ArrayList<>();
-
-    StringBuilder sb = new StringBuilder();
+    private ArrayList<Integer> scores = new ArrayList<>();
+    /**
+     * builds string to print on GUI
+     */
+    private StringBuilder sb = new StringBuilder();
 
     /**
      * EVC for the scoring class
