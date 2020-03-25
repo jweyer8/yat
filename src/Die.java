@@ -15,6 +15,9 @@ public class Die {
      * value is the number that is associated with the upside of the die this is set using a random number generator
      */
     private int value;
+    /**
+     * Random object for getting random values for which side of die is up when rolled
+     */
     private Random rand;
     /**
      * keep indicated whether the die object should be rolled ie. value should be changed
@@ -35,12 +38,10 @@ public class Die {
         rand = new Random();
         dieRoll();
     }
-
     /**
      * Get values randomly (roll dice) for the die that are chosen by the user to roll
      */
     public void dieRoll(){value = rand.nextInt(numSides) + 1;}
-
     /**
      * Sets the keep field
      *
@@ -49,14 +50,12 @@ public class Die {
     public void setKeep(char keep){
         this.keep = keep;
     }
-
     /**
      * getter for die value (ie which side of die is up)
      *
      * @return return the value of the up side of the die
      */
     public int getValue(){return value;}
-
     /**
      * getter for keep indicator (ie should the die be rolled)
      *

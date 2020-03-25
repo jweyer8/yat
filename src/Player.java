@@ -4,7 +4,7 @@ import java.util.ArrayList;
  * Player class for the each player playing Yahtzee
  *
  * @author Jared Weyer
- * @version 1.0
+ * @version 2.0
  */
 public class Player {
     /**
@@ -47,6 +47,10 @@ public class Player {
      * string to print on GUI
      */
     private StringBuilder sb = new StringBuilder();
+
+
+
+
 
     /**
      * EVC for the player class
@@ -99,23 +103,22 @@ public class Player {
             }
         }
     }
-
     /**
      * Gets the used string ArrayList
      *
      * @return used {link: #used}
      */
     public ArrayList<String> getUsed(){return used;}
-
     /**
      * Gets choices string ArrayList
      *
      * @return choices {link: #choices}
      */
     public ArrayList<String> getChoices(){return choices;}
-
+    /**
+     * Clears the string builder so that each round the string is reset
+     */
     public void clearSb(){sb.setLength(0);}
-
     /**
      * Determine and return the final total score for the player (This is the sum of the scores on each row of scorecard)
      *
@@ -128,7 +131,6 @@ public class Player {
         }
         return sum;
     }
-
     /**
      * Set the bonus cutoff value (this value corresponds to an average value of three dice for each of the upper scorecard rows)
      */
@@ -139,7 +141,6 @@ public class Player {
         }
         bonusCutoff = bval;
     }
-
     /**
      * Determine if the player reaches the cutoff value needed to get points for the bonus row
      */
@@ -152,9 +153,10 @@ public class Player {
             bonus = BONUS_VALUE;
         }
     }
-
     /**
      * Prints the final scorecard for the player
+     *
+     * @return {@link #sb}
      */
     public StringBuilder printFinalCard(){
         //upper scoreCard

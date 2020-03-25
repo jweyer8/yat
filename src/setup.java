@@ -9,6 +9,9 @@ import java.awt.event.ActionListener;
 
 /**
  * Setup frame which gets the games basic values from the user
+ *
+ * @author Jared Weyer
+ * @version 1.0
  */
 public class setup extends JFrame{
     private JComboBox playerCombo;

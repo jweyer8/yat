@@ -7,6 +7,9 @@ import java.util.ArrayList;
 
 /**
  * JFrame that displays the end game window
+ *
+ * @author Jared Weyer
+ * @version 1.0
  */
 public class gameOver extends JFrame{
 

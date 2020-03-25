@@ -1,6 +1,5 @@
 
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 
 /**
@@ -43,9 +42,12 @@ public class Scoring{
      */
     private ArrayList<Integer> scores = new ArrayList<>();
     /**
-     * builds string to print on GUI
+     * builds string which contains the scores for the hand which can be printed on GUI
      */
     private StringBuilder sb = new StringBuilder();
+
+
+
 
     /**
      * EVC for the scoring class
@@ -57,10 +59,10 @@ public class Scoring{
         this.hand = hand;
         used = player.getUsed();
     }
-
     /**
      * Print the score for upper and lower scorecard
-     * @return
+     *
+     * @return {@link #sb}
      */
     public StringBuilder printScore(){
         sb.append("<html>");
@@ -72,16 +74,16 @@ public class Scoring{
         sb.append("</html>");
         return sb;
     }
-
+    /**
+     * Clears scores so that the new hand can have new score values associated with the scores for that hand
+     */
     public void clearScores(){scores.clear();}
-
     /**
      *Gets the scores corresponding to each row on the scorecard for the given hand
      *
-     * @return scores {link: #scores}
+     * @return scores {@link #scores}
      */
     public ArrayList<Integer> getScores(){return scores;}
-
     /**
      * Determine whether the roll has a full house
      *
@@ -105,7 +107,6 @@ public class Scoring{
         }
     return full;
     }
-
     /**
      * Determine whether the roll has a small or large straight
      *
@@ -127,7 +128,6 @@ public class Scoring{
         }
         return bigLen;
     }
-
     /**
      * Prints the values for the upper scorecard
      */
@@ -156,7 +156,6 @@ public class Scoring{
             isUsed = false;
         }
     }
-
     /**
      * Prints the values for the lower scorecard
      */

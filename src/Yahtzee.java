@@ -3,13 +3,11 @@ import javax.swing.*;
 /**
  * Yahtzee main class that allows user to play the game
  * CPSC 224, Spring 2020
- * Programming assignment #3
+ * Programming assignment #4
  * No sources to cite.
  *
  * @author Jared Weyer
- * @version 3.0 2/24/20
- * @see Die
- * @see Scoring
+ * @version 4.0 3/25/20
  */
 public class Yahtzee {
     /**
@@ -18,7 +16,7 @@ public class Yahtzee {
      * @param args takes in command line arguments
      */
     public static void main(String[] args) {
-        //GUI
+        //create setup JFrame
         JFrame setup = new setup("");
         setup.setVisible(true);
         setup.isResizable();

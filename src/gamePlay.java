@@ -7,6 +7,9 @@ import static javax.swing.BorderFactory.createEtchedBorder;
 
 /**
  * Game play JFrame displays all game content
+ *
+ * @author Jared Weyer
+ * @version 1.0
  */
 public class gamePlay extends JFrame {
 
@@ -91,11 +94,13 @@ public class gamePlay extends JFrame {
     int winingScore = 0;
 
 
-
     /**
      * EVC for the gamePlay class
      *
-     * @param title header of frame
+     * @param title sets title of JFrame
+     * @param numPlayers number of players in game
+     * @param numDice number of dice in game
+     * @param numSides number of sides on a dice
      */
     public gamePlay(String title, int numPlayers,int numDice, int numSides) {
         super(title);

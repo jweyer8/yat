@@ -1,7 +1,6 @@
-import java.awt.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import javax.swing.*;
 
 /**
  * Holds the die objects
@@ -72,18 +71,6 @@ public class Hand {
         }
     }
     /**
-     * Prints the up side values of the die in the hand
-     */
-    public void printHand(){
-        System.out.print("Your roll was: ");
-        JPanel dieButtonPanel = new JPanel();
-        JButton dieButton = new JButton("Die");
-        for (int dieCount = 0; dieCount < numDice; dieCount++) {
-            dieButtonPanel.add(dieButton);
-           // System.out.print(hand.get(dieCount).getValue() + " ");
-        }
-    }
-    /**
      * Rolls the die in the hand that the user wants to roll
      * Resets the dup ArrayList and the handVals ArrayList
      */
@@ -128,8 +115,12 @@ public class Hand {
             dup.set(dieVal-1,dupCount);
         }
     }
-
-
+    /**
+     * Sets which die not to roll based off user input to GUI's die buttons
+     *
+     * @param keep 'y' or 'n' depending if the user wants to roll the dice or not
+     * @param pos which die the user assigns keep to
+     */
     public void setDieKeep(char keep, int pos){hand.get(pos).setKeep(keep);}
     /**
      * Gets the dup ArrayList which is used to score the hand
@@ -143,17 +134,17 @@ public class Hand {
      */
     public int getNumSides(){return numSides;}
     /**
-     * Gets the user string
-     *
-     * @return userStr {@link #userStr}
-     */
-    public String getUserStr(){return userStr;}
-    /**
      * Gets the handVals ArrayList
      *
      * @return {@link #handVals}
      */
     public ArrayList<Integer> getVals(){return handVals;}
+
+    /**
+     * Returns the number of dice in a hand
+     *
+     * @return {@link #numDice}
+     */
     public int getNumDice(){return numDice;}
 }
 
