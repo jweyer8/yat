@@ -162,6 +162,7 @@ public class gamePlay extends JFrame {
      * button for ending game
      */
     private JButton finishButton;
+    private JButton finalScoreButton;
 
     //die Icons (Images of die sides)
     private Icon dieRoll = new ImageIcon("src/dieImages/dieRoll.png");
@@ -242,22 +243,22 @@ public class gamePlay extends JFrame {
         //set size based on setup args
         switch(numSides){
             case 1:
-                this.setPreferredSize(new Dimension(1000,410));
-                break;
-            case 2:
                 this.setPreferredSize(new Dimension(1000,420));
                 break;
-            case 3:
+            case 2:
                 this.setPreferredSize(new Dimension(1000,430));
                 break;
+            case 3:
+                this.setPreferredSize(new Dimension(1000,440));
+                break;
             case 4:
-                this.setPreferredSize(new Dimension(1000,450));
+                this.setPreferredSize(new Dimension(1000,460));
                 break;
             case 5:
-                this.setPreferredSize(new Dimension(1000,470));
+                this.setPreferredSize(new Dimension(1000,480));
                 break;
             case 6:
-                this.setPreferredSize(new Dimension(1000,490));
+                this.setPreferredSize(new Dimension(1000,500));
                 break;
             case 7:
                 this.setPreferredSize(new Dimension(1000,510));
@@ -348,6 +349,7 @@ public class gamePlay extends JFrame {
         turnLabel.setText(turnLabel.getText() + " " + Integer.toString(turn));
 
         //set visibility of components
+        finalScoreButton.setVisible(false);
         finishButton.setVisible(false);
         scoreFunctionPanel.setVisible(false);
         scorecardLabel.setVisible(false);
@@ -462,7 +464,8 @@ public class gamePlay extends JFrame {
 
                 //set visibility and text of components
                 scoreFunctionPanel.setVisible(true);
-                playerFinalScoreLabel.setVisible(true);
+                playerFinalScoreLabel.setVisible(false);
+                finalScoreButton.setVisible(true);
                 playerFinalScoreLabel.setText(players.get(playerCount).printFinalCard().toString());
                 selectScoreCombo.setVisible(true);
                 selectScoreLabel.setVisible(true);
@@ -606,6 +609,7 @@ public class gamePlay extends JFrame {
                 playerLabel.setText("PLAYER " + Integer.toString(playerCount + 1));
                 turnLabel.setText("TURN 0");
                 selectScoreCombo.setSelectedIndex(0);
+                finalScoreButton.setVisible(false);
                 selectScoreCombo.setEnabled(false);
                 takeScoreButton.setVisible(false);
                 selectScoreLabel.setVisible(false);
@@ -638,6 +642,20 @@ public class gamePlay extends JFrame {
                 JFrame gameOver = new gameOver("",playerScores,players,winP,winingScore);
                 gameOver.setVisible(true);
                 gameOver.setPreferredSize(new Dimension(50,50));
+            }
+        });
+
+        finalScoreButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(finalScoreButton.isSelected() == true){
+                    playerFinalScoreLabel.setVisible(false);
+                    finalScoreButton.setSelected(false);
+                }
+                else{
+                    finalScoreButton.setSelected(true);
+                    playerFinalScoreLabel.setVisible(true);
+                }
             }
         });
 

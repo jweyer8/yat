@@ -15,6 +15,10 @@ public class gameOver extends JFrame{
     //game of fields
 
     /**
+     * gameover Panel
+     */
+    private JPanel gameOverPanel;
+    /**
      * main panel for frame
      */
     private JPanel gameOverRoot;
