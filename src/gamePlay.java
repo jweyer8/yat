@@ -54,7 +54,7 @@ public class gamePlay extends JFrame {
     private JButton finishButton;
 
     //die Icons (Images of die sides)
-    Icon dieRoll = new ImageIcon("src/dieImages/dieRoll2.png");
+    Icon dieRoll = new ImageIcon("src/dieImages/dieRoll.png");
     Icon dieTake = new ImageIcon("src/dieImages/dieTake.png");
     Icon dieEnd = new ImageIcon("src/dieImages/dieEnd.png");
     Icon die0 = new ImageIcon("src/dieImages/die0.png");
