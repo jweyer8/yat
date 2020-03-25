@@ -12,85 +12,215 @@ import static javax.swing.BorderFactory.createEtchedBorder;
  * @version 1.0
  */
 public class gamePlay extends JFrame {
-
     //game play panel fields
+
+    /**
+     * main JPanel for gamePlay frame
+     */
     private JPanel rootPanel;
+    /**
+     * holds the die buttons
+     */
     private JPanel dieButtonPanel;
+    /**
+     * die one button
+     */
     private JButton dieButton1;
+    /**
+     * die two button
+     */
     private JButton dieButton2;
+    /**
+     * die three button
+     */
     private JButton dieButton3;
+    /**
+     * die four button
+     */
     private JButton dieButton4;
+    /**
+     * die five button
+     */
     private JButton dieButton5;
+    /**
+     * die six button
+     */
     private JButton dieButton6;
+    /**
+     * die seven button
+     */
     private JButton dieButton7;
+    /**
+     * die eight button
+     */
     private JButton dieButton8;
+    /**
+     * die nine button
+     */
     private JButton dieButton9;
+    /**
+     * die ten button
+     */
     private JButton dieButton10;
+    /**
+     * die eleven button
+     */
     private JButton dieButton11;
+    /**
+     * die twelve button
+     */
     private JButton dieButton12;
+    /**
+     * button to roll the selected dice
+     */
     private JButton RollButton;
+    /**
+     * label showing which players turn it is
+     */
     private JLabel playerLabel;
+    /**
+     * label that shows the scores for the current hand
+     */
     private JLabel scorecardLabel;
+    /**
+     * label that shows how many rolls the current player has used
+     */
     private JLabel turnLabel;
+    /**
+     * combo box for selecting which score the player would like to take for the round
+     */
     private JComboBox selectScoreCombo;
-    private JPanel rollButtonPanel;
+    /**
+     * panel that contains the Final scorecard, scores for the round, and the selection combo box
+     */
     private JPanel scoreFunctionPanel;
+    /**
+     * combo box label
+     */
     private JLabel selectScoreLabel;
+    /**
+     * button for taking the score which has been selected and ending turn for given player
+     */
     private JButton takeScoreButton;
+    /**
+     * label that shows the final scorecard for the given player
+     */
     private JLabel playerFinalScoreLabel;
+    /**
+     * panel that includes the stats for all players in the game
+     */
     private JPanel gameStatsPanel;
+    /**
+     * contains player1StatsLabel
+     */
     private JPanel player1StatsPanel;
-    private JPanel player3StatsPanel;
-    private JPanel player4StatsPanel;
-    private JLabel player1StatsLabel;
-    private JLabel player2StatsLabel;
-    private JLabel player3StatsLabel;
-    private JLabel player4StatsLabel;
-    private JLabel pl1;
-    private JLabel pl2;
-    private JLabel pl3;
-    private JLabel pl4;
+    /**
+     * contains player2StatsLabel
+     */
     private JPanel player2StatsPanel;
+    /**
+     * private JPanel player3StatsPanel;
+     */
+    private JPanel player3StatsPanel;
+    /**
+     * contains player4StatsLabel
+     */
+    private JPanel player4StatsPanel;
+    /**
+     * shows player ones total score
+     */
+    private JLabel player1StatsLabel;
+    /**
+     * shows player twos total score
+     */
+    private JLabel player2StatsLabel;
+    /**
+     * shows player threes total score
+     */
+    private JLabel player3StatsLabel;
+    /**
+     * shows player fours final score
+     */
+    private JLabel player4StatsLabel;
+    /**
+     * label of total score for player 1
+     */
+    private JLabel pl1;
+    /**
+     * label of total score for player 2
+     */
+    private JLabel pl2;
+    /**
+     * label of total score for player 3
+     */
+    private JLabel pl3;
+    /**
+     * label of total score for player 4
+     */
+    private JLabel pl4;
+    /**
+     * button for ending game
+     */
     private JButton finishButton;
 
     //die Icons (Images of die sides)
-    Icon dieRoll = new ImageIcon("src/dieImages/dieRoll.png");
-    Icon dieTake = new ImageIcon("src/dieImages/dieTake.png");
-    Icon dieEnd = new ImageIcon("src/dieImages/dieEnd.png");
-    Icon die0 = new ImageIcon("src/dieImages/die0.png");
-    Icon die1 = new ImageIcon("src/dieImages/die1.png");
-    Icon die2 = new ImageIcon("src/dieImages/die2.png");
-    Icon die3 = new ImageIcon("src/dieImages/die3.png");
-    Icon die4 = new ImageIcon("src/dieImages/die4.png");
-    Icon die5 = new ImageIcon("src/dieImages/die5.png");
-    Icon die6 = new ImageIcon("src/dieImages/die6.png");
-    Icon die7 = new ImageIcon("src/dieImages/die7.png");
-    Icon die8 = new ImageIcon("src/dieImages/die8.png");
-    Icon die9 = new ImageIcon("src/dieImages/die9.png");
-    Icon die10 = new ImageIcon("src/dieImages/die10.png");
-    Icon die11 = new ImageIcon("src/dieImages/die11.png");
-    Icon die12 = new ImageIcon("src/dieImages/die12.png");
+    private Icon dieRoll = new ImageIcon("src/dieImages/dieRoll.png");
+    private Icon dieTake = new ImageIcon("src/dieImages/dieTake.png");
+    private Icon dieEnd = new ImageIcon("src/dieImages/dieEnd.png");
+    private Icon die0 = new ImageIcon("src/dieImages/die0.png");
+    private Icon die1 = new ImageIcon("src/dieImages/die1.png");
+    private Icon die2 = new ImageIcon("src/dieImages/die2.png");
+    private Icon die3 = new ImageIcon("src/dieImages/die3.png");
+    private Icon die4 = new ImageIcon("src/dieImages/die4.png");
+    private Icon die5 = new ImageIcon("src/dieImages/die5.png");
+    private Icon die6 = new ImageIcon("src/dieImages/die6.png");
+    private Icon die7 = new ImageIcon("src/dieImages/die7.png");
+    private Icon die8 = new ImageIcon("src/dieImages/die8.png");
+    private Icon die9 = new ImageIcon("src/dieImages/die9.png");
+    private Icon die10 = new ImageIcon("src/dieImages/die10.png");
+    private Icon die11 = new ImageIcon("src/dieImages/die11.png");
+    private Icon die12 = new ImageIcon("src/dieImages/die12.png");
 
 
-    //contains the value of rounds played
+    /**
+     * contains the value of rounds played
+     */
     private int round = 0;
-    //contains the turn in which a player is on
+    /**
+     * contains the turn which a player is on
+     */
     private int turn = 0;
-    //contains the number of players in the game
+    /**
+     * contains which players turn it is
+     */
     private int playerCount = 0;
-    //Number of dice in the hand
+    /**
+     * number of dice in hand
+     */
     private int numDice;
-    //Number of players in game
+    /**
+     * number of players in game
+     */
     private int numPlayers;
-    //Number of sides on the dice
+    /**
+     * number of sides on a die
+     */
     private int numSides;
-    //Number of turns per player
+    /**
+     * the number of rolls a player gets per turn
+     */
     private int maxTurns = 3;
-    //holds an array of die objects
+    /**
+     * hold an array of die objects
+     */
     private Hand hand;
-    //player that is winning
+    /**
+     * player that is winning the game currently
+     */
     int winP = 0;
-    //score of winning player
+    /**
+     * score of player that is winning the game
+     */
     int winingScore = 0;
 
 
@@ -262,7 +392,7 @@ public class gamePlay extends JFrame {
         }
 
         //number of rounds in a game
-        int numRounds = 1;//players.get(0).getChoices().size();
+        int numRounds = players.get(0).getChoices().size();
 
         //array of player scores
         ArrayList<Integer> playerScores = new ArrayList<>();
@@ -513,8 +643,6 @@ public class gamePlay extends JFrame {
 
         this.pack();
     }
-
-
     /**
      * sets the combo box based off what options the player has left
      *
@@ -541,7 +669,6 @@ public class gamePlay extends JFrame {
             isUsed = false;
         }
     }
-
     /**
      * allows player to take score if all die are select even tho they have more turn avalible to them
      *
@@ -563,7 +690,6 @@ public class gamePlay extends JFrame {
             takeScoreButton.setVisible(true);
         }
     }
-
 }
 
 

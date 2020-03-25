@@ -12,19 +12,50 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class gameOver extends JFrame{
-
     //game of fields
+
+    /**
+     * main panel for frame
+     */
     private JPanel gameOverRoot;
-    private JPanel gameOverPanel;
+    /**
+     * label for game over txt
+     */
     private JLabel gameOverLabel1;
+    /**
+     * label for displaying winning player and his score
+     */
     private JLabel winerLabel;
+    /**
+     * contains all labels for players final scores
+     */
     private JPanel statsPanel;
+    /**
+     * label for player 1 final score
+     */
     private JLabel p1;
+    /**
+     * label for player 2 final score
+     */
     private JLabel p2;
+    /**
+     * label for player 3 final score
+     */
     private JLabel p3;
+    /**
+     * label for player 4 final score
+     */
     private JLabel p4;
+    /**
+     * list of players final scores
+     */
     private ArrayList<Integer> playerScore = new ArrayList<>();
+    /**
+     * array of player objects
+     */
     private ArrayList<Player> players = new ArrayList<>();
+
+
 
     /**
      * EVC for the gameOver class

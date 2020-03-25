@@ -14,21 +14,63 @@ import java.awt.event.ActionListener;
  * @version 1.0
  */
 public class setup extends JFrame{
+    /**
+     * combo box for selecting the amount of players in the game
+     */
     private JComboBox playerCombo;
+    /**
+     * combo box for selecting the amount of die in the game
+     */
     private JComboBox dieCombo;
+    /**
+     * combo box for selecting the amount of sides on a die
+     */
     private JComboBox sidesCombo;
+    /**
+     * button for starting game
+     */
     private JButton startButton;
+    /**
+     * label for welcome txt
+     */
     private JLabel welcomeLabel;
+    /**
+     * holds the combo boxes for making game selections
+     */
     private JPanel gameSetupPanel;
+    /**
+     * main panel for frame
+     */
     private JPanel setupRoot;
+    /**
+     * label for player combo box
+     */
     private JLabel playerLabel;
+    /**
+     * label for die combo box
+     */
     private JLabel dieLabel;
+    /**
+     * label for sides combo box
+     */
     private JLabel sidesLabel;
 
     //basic game numbers
+    /**
+     * number of players in game, is set by player combo box
+     */
     private int numPlayers = 0;
+    /**
+     * number of dice in game, is set by die combo box
+     */
     private int numDice = 0;
+    /**
+     * number of sides on a die, is set by sides combo box
+     */
     private int numSides = 0;
+
+
+
 
     /**
      * EVC for the setup class
