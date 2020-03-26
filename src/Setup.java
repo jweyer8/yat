@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
  * @author Jared Weyer
  * @version 1.0
  */
-public class setup extends JFrame{
+public class Setup extends JFrame{
     /**
      * combo box for selecting the amount of players in the game
      */
@@ -77,7 +77,7 @@ public class setup extends JFrame{
      *
      * @param title title of the frame
      */
-    public setup(String title){
+    public Setup(String title){
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(setupRoot);
@@ -129,7 +129,7 @@ public class setup extends JFrame{
                 numSides = (Integer) (Integer.parseInt(sidesCombo.getSelectedItem().toString().trim()));
 
                 //create the main game frame
-                JFrame game = new gamePlay("", numPlayers, numDice, numSides);
+                JFrame game = new GamePlay("", numPlayers, numDice, numSides);
             }
         });
     }

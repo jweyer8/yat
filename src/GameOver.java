@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @author Jared Weyer
  * @version 1.0
  */
-public class gameOver extends JFrame{
+public class GameOver extends JFrame{
     //game of fields
 
     /**
@@ -70,7 +70,7 @@ public class gameOver extends JFrame{
      * @param winner the position of the winning player in the playerScores array {link: #playerScores}
      * @param winnerVal the score of the winning player
      */
-    public gameOver(String title, ArrayList<Integer> playerScores,ArrayList<Player> players,int winner,int winnerVal){
+    public GameOver(String title, ArrayList<Integer> playerScores, ArrayList<Player> players, int winner, int winnerVal){
         super(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(gameOverRoot);

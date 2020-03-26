@@ -11,7 +11,7 @@ import static javax.swing.BorderFactory.createEtchedBorder;
  * @author Jared Weyer
  * @version 1.0
  */
-public class gamePlay extends JFrame {
+public class GamePlay extends JFrame {
     //game play panel fields
 
     /**
@@ -166,6 +166,7 @@ public class gamePlay extends JFrame {
 
     //die Icons (Images of die sides)
     private Icon dieRoll = new ImageIcon("src/dieImages/dieRoll.png");
+    private Icon dieSee = new ImageIcon("src/dieImages/seeDie.png");
     private Icon dieTake = new ImageIcon("src/dieImages/dieTake.png");
     private Icon dieEnd = new ImageIcon("src/dieImages/dieEnd.png");
     private Icon die0 = new ImageIcon("src/dieImages/die0.png");
@@ -233,7 +234,7 @@ public class gamePlay extends JFrame {
      * @param numDice number of dice in game
      * @param numSides number of sides on a dice
      */
-    public gamePlay(String title, int numPlayers,int numDice, int numSides) {
+    public GamePlay(String title, int numPlayers, int numDice, int numSides) {
         super(title);
         setResizable(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -317,6 +318,8 @@ public class gamePlay extends JFrame {
         selectScoreCombo.setBorder(cbl);
         selectScoreLabel.setBorder(cbl);
         scoreFunctionPanel.setBorder(BorderFactory.createCompoundBorder(new EtchedBorder(Color.black,Color.white), new EmptyBorder(10,10,10,10)));
+        finalScoreButton.setBorder(new EmptyBorder(5,5,5,5));
+        finalScoreButton.setIcon(dieSee);
         //border for the die buttons
         for(Component c : gameStatsPanel.getComponents()){
             ((JPanel)c).setBorder(bl);
@@ -639,7 +642,7 @@ public class gamePlay extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                JFrame gameOver = new gameOver("",playerScores,players,winP,winingScore);
+                JFrame gameOver = new GameOver("",playerScores,players,winP,winingScore);
                 gameOver.setVisible(true);
                 gameOver.setPreferredSize(new Dimension(50,50));
             }

@@ -17,7 +17,7 @@ public class Yahtzee {
      */
     public static void main(String[] args) {
         //create setup JFrame
-        JFrame setup = new setup("");
+        JFrame setup = new Setup("");
         setup.setVisible(true);
         setup.isResizable();
         setup.setSize(550,400);
