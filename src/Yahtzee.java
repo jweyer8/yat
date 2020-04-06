@@ -20,7 +20,7 @@ public class Yahtzee {
         JFrame setup = new Setup("");
         setup.setVisible(true);
         setup.isResizable();
-        setup.setSize(550,400);
+        setup.setSize(700,550);
         setup.setLocation(0,0);
     }
 }

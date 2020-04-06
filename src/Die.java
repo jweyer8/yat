@@ -23,6 +23,10 @@ public class Die {
      * keep indicated whether the die object should be rolled ie. value should be changed
      */
     private char keep;
+    /**
+     * the side of the die is red, every die in the hand has a unique red side
+     */
+    private int red;
 
 
 
@@ -31,10 +35,12 @@ public class Die {
      *
      * @param numSides {@link #numSides}
      * @param keep {@link #keep}
+     * @param red {@link #red}
      */
-    public Die(int numSides, char keep){
+    public Die(int numSides, char keep,int red){
         this.numSides = numSides;
         this.keep = keep;
+        this.red = red;
         rand = new Random();
         dieRoll();
     }
@@ -56,6 +62,18 @@ public class Die {
      * @return return the value of the up side of the die
      */
     public int getValue(){return value;}
+    /**
+     * sets value of die
+     */
+    public void setValue(int val){
+        value = val;
+    }
+    /**
+     * gets the red side of the die
+     *
+     * @return {@link #red}
+     */
+    public int getRed(){return red;}
     /**
      * getter for keep indicator (ie should the die be rolled)
      *

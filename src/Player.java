@@ -160,7 +160,7 @@ public class Player {
      */
     public StringBuilder printFinalCard(){
         //upper scoreCard
-        sb.append("<html><BR/><CENTER><b> FINAL SCORECARD </b></CENTER>");
+        sb.append("<html><BR/><CENTER><b> &nbsp FINAL SCORECARD  &nbsp </b></CENTER>");
         for(int side = 1; side <= numSides; side++){
             sb.append("<br/>");
             sb.append("<hr>");

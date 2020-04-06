@@ -1,8 +1,12 @@
+import sun.plugin2.util.ColorUtil;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.plaf.ScrollBarUI;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -68,6 +72,8 @@ public class Setup extends JFrame{
      * number of sides on a die, is set by sides combo box
      */
     private int numSides = 0;
+    //Icon for spicy die
+    private Icon spice = new ImageIcon("src/dieImages/spice.png");
 
 
 
@@ -82,20 +88,66 @@ public class Setup extends JFrame{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(setupRoot);
 
+        //set visibility (change if we want user to be able to adjust number of dice and number of sides)
+        dieCombo.setVisible(false);
+        dieLabel.setVisible(false);
+        sidesCombo.setVisible(false);
+        sidesLabel.setVisible(false);
+        playerCombo.setPrototypeDisplayValue("        ");
+
+
         //setting component looks
+        Font font = new Font("forte",Font.PLAIN,15);
+        Color fColor = new Color(193,34,11);
         gameSetupPanel.setBorder(new EmptyBorder(20,20,20,20));
         setupRoot.setBorder(new EmptyBorder(20,20,20,20));
-        Border border = new EtchedBorder(Color.black,Color.white);
-        startButton.setBorder(new CompoundBorder(new EtchedBorder(Color.black,Color.white),new EmptyBorder(5,5,5,5)));
+        Border border = new EtchedBorder(fColor,Color.white);
+        startButton.setBorder(new CompoundBorder(new EtchedBorder(fColor,Color.white),new EmptyBorder(5,5,5,5)));
         sidesCombo.setBorder(border);
+        sidesCombo.setForeground(fColor);
+        sidesCombo.setFont(font);
         dieCombo.setBorder(border);
+        dieCombo.setFont(font);
+        dieCombo.setForeground(fColor);
+        dieCombo.setFont(font);
         playerCombo.setBorder(border);
+        playerCombo.setForeground(fColor);
+        playerCombo.setFont(font);
         startButton.setPreferredSize(new Dimension(50,50));
-        welcomeLabel.setFont(new Font("serif",Font.PLAIN,30));
-        dieLabel.setFont(new Font("serif",Font.PLAIN,15));
-        sidesLabel.setFont(new Font("serif",Font.PLAIN,15));
-        playerLabel.setFont(new Font("serif",Font.PLAIN,15));
+        dieLabel.setFont(font);
+        dieLabel.setForeground(Color.white);
+        sidesLabel.setFont(font);
+        sidesLabel.setForeground(Color.white);
+        playerLabel.setFont(font);
+        playerLabel.setForeground(Color.white);
+        welcomeLabel.setText("");
+        welcomeLabel.setIcon(spice);
+        startButton.setFont( new Font("forte",Font.PLAIN,30));
+        startButton.setForeground(Color.white);
 
+        playerCombo.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public void paint(Graphics g) {
+                setBackground(Color.white);
+                super.paint(g);
+            }
+        });
+
+        dieCombo.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public void paint(Graphics g) {
+                setBackground(Color.white);
+                super.paint(g);
+            }
+        });
+
+        sidesCombo.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public void paint(Graphics g) {
+                setBackground(Color.white);
+                super.paint(g);
+            }
+        });
 
 
         //set combo items
@@ -110,7 +162,7 @@ public class Setup extends JFrame{
 
         //set the max length of combo and set the default game values
         dieCombo.setMaximumRowCount(3);
-        dieCombo.setSelectedIndex(4);
+        dieCombo.setSelectedIndex(5);
         playerCombo.setMaximumRowCount(3);
         playerCombo.setSelectedIndex(3);
         sidesCombo.setMaximumRowCount(3);

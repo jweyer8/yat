@@ -50,6 +50,8 @@ public class GameOver extends JFrame{
      * label for player 4 final score
      */
     private JLabel p4;
+    private JLabel pepper1Label;
+    private JLabel pepper2Lable;
     /**
      * list of players final scores
      */
@@ -79,23 +81,32 @@ public class GameOver extends JFrame{
         this.playerScore = playerScores;
 
         //set the look of the frame and components
-        gameOverLabel1.setFont(new Font("Serif", Font.PLAIN, 60));
+        Color fColor = new Color(193,34,11);
+        gameOverLabel1.setForeground(fColor);
+        gameOverLabel1.setFont(new Font("forte", Font.PLAIN, 100));
         gameOverRoot.setPreferredSize(new Dimension(50,50));
         this.setPreferredSize(new Dimension(1000,600));
         gameOverLabel1.setVisible(true);
-        winerLabel.setFont(new Font("Serif", Font.PLAIN, 30));
+        winerLabel.setForeground(fColor);
+        winerLabel.setFont(new Font("forte", Font.PLAIN, 30));
         winerLabel.setText("<html><center>Player " + Integer.toString(winner + 1) + " wins</center> <br/><center> with a score of " + Integer.toString(winnerVal) + "</center>");
-        p1.setFont(new Font("Serif", Font.PLAIN, 15));
-        p2.setFont(new Font("Serif", Font.PLAIN, 15));
-        p3.setFont(new Font("Serif", Font.PLAIN, 15));
-        p4.setFont(new Font("Serif", Font.PLAIN, 15));
+        p1.setForeground(fColor);
+        p1.setFont(new Font("forte", Font.PLAIN, 15));
+        p2.setForeground(fColor);
+        p2.setFont(new Font("forte", Font.PLAIN, 15));
+        p3.setForeground(fColor);
+        p3.setFont(new Font("forte", Font.PLAIN, 15));
+        p4.setForeground(fColor);
+        p4.setFont(new Font("forte", Font.PLAIN, 15));
+        pepper1Label.setIcon(new ImageIcon("src/dieImages/pepperM.png"));
+        pepper2Lable.setIcon(new ImageIcon("src/dieImages/pepperM.png"));
 
         //display the final scores of all players
         int counter = 0;
         for(Component c : statsPanel.getComponents()){
             if(c instanceof JLabel && counter < players.size()){
                 ((JLabel)c).setText("<html><center>PLAYER " + Integer.toString(counter + 1) + "'S SCORE </center><br/><center>" + Integer.toString(playerScores.get(counter)) + "</center> </html>");
-                ((JLabel)c).setBorder(new CompoundBorder(new EtchedBorder(Color.black,Color.white), new EmptyBorder(20,20,20,20)));
+                ((JLabel)c).setBorder(new CompoundBorder(new EtchedBorder(fColor,Color.white), new EmptyBorder(20,20,20,20)));
             }
             else{
                 c.setVisible(false);

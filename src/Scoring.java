@@ -67,7 +67,7 @@ public class Scoring{
     public StringBuilder printScore(){
         sb.append("<html>");
         sb.append("<br/>");
-        sb.append("<center><b> HAND SCORES </b></center>");
+        sb.append("<center><b> &nbsp  &nbsp  &nbsp HAND SCORES  &nbsp  &nbsp  &nbsp </b></center>");
         upperScore();
         lowerScore();
         sb.append(System.getProperty("line.separator"));

@@ -51,7 +51,7 @@ public class Hand {
         hand = new ArrayList<>();
 
         for(int dieCount = 0; dieCount < numDice; dieCount++) {
-            hand.add(new Die(numSides,'n'));
+            hand.add(new Die(numSides,'n', dieCount + 1));
             handVals.add(hand.get(dieCount).getValue());
             str += 'n';
         }
@@ -139,12 +139,26 @@ public class Hand {
      * @return {@link #handVals}
      */
     public ArrayList<Integer> getVals(){return handVals;}
-
     /**
      * Returns the number of dice in a hand
      *
      * @return {@link #numDice}
      */
     public int getNumDice(){return numDice;}
+    /**
+     * returns which side of the die is red
+     *
+     * @param s index of die in hand
+     * @return the side of the die which is red
+     */
+    public int getRedSide(int s){
+        int r = hand.get(s).getRed();
+        return r;
+    }
+    public void setDieVal(int dieSide,int diePos){
+        hand.get(diePos).setValue(dieSide);
+        vals();
+        duplicate();
+    }
 }
 
